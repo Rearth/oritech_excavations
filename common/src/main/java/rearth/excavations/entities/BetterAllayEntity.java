@@ -41,6 +41,8 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Iterator;
+
 public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner, GeoEntity {
     
     public static float MAX_SPEED = 0.6f;
@@ -50,10 +52,12 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     
     private static final TrackedData<ItemStack> SYNCED_TOOL = DataTracker.registerData(BetterAllayEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+    public boolean resetStoneCache = false;
     public BlockPos lastChest = BlockPos.ORIGIN;
     
+    
     private final SimpleInventory inventory = new SimpleInventory(3);
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     
     public BetterAllayEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -88,6 +92,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
             public void start() {
                 super.start();
                 System.out.println("Starting wandering");
+                startFlyAnimation();
             }
         });
         
@@ -150,6 +155,16 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     }
     
     @Override
+    public boolean canImmediatelyDespawn(double distanceSquared) {
+        return false;
+    }
+    
+    @Override
+    public boolean cannotDespawn() {
+        return true;
+    }
+    
+    @Override
     public SimpleInventory getInventory() {
         return inventory;
     }
@@ -200,6 +215,8 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     
     private static class FlyToStone extends FlyToTagGoal {
         
+        private Iterator<BlockPos> nextPosIterator;
+        
         public FlyToStone(BetterAllayEntity entity, TagKey<Block> targetFilter, float minStartRange, float reachDist, float searchDist) {
             super(entity, targetFilter, minStartRange, reachDist, searchDist);
         }
@@ -207,6 +224,41 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         @Override
         public boolean canStart() {
             return this.entity.canStartMining() && super.canStart();
+        }
+        
+        @Override
+        public BlockPos findClosestTarget() {
+            
+            if (entity.resetStoneCache) {
+                nextPosIterator = null;
+                entity.resetStoneCache = false;
+            }
+            
+            if (nextPosIterator != null && nextPosIterator.hasNext()) {
+                var candidate = getClosestFromIterator();
+                if (candidate != null) return candidate;
+            }
+            
+            var closeResult = super.findClosestTarget();
+            
+            if (closeResult == null && entity.lastChest != BlockPos.ORIGIN) {
+                System.out.println("getting target from dig controller");
+                var digTarget = DigController.getNextPosition(entity.lastChest, entity.getWorld());
+                nextPosIterator = BlockPos.iterateOutwards(digTarget, 4, 4, 4).iterator();
+            }
+            
+            return null;
+        }
+        
+        private BlockPos getClosestFromIterator() {
+            while (nextPosIterator.hasNext()) {
+                var candidate = nextPosIterator.next();
+                var candidateState = entity.getWorld().getBlockState(candidate);
+                if (candidateState.isAir() || !candidateState.isIn(TagContent.ALLAY_MINEABLE)) continue;
+                return candidate;
+            }
+            
+            return null;
         }
     }
     

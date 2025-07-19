@@ -48,6 +48,7 @@ public abstract class ChestInteractionGoal extends Goal {
         this.entity.getNavigation().startMovingTo(targetPos.x, targetPos.y, targetPos.z, BetterAllayEntity.MAX_SPEED);
         timeStuck = 0;
         this.entity.startFlyAnimation();
+        this.entity.resetStoneCache = true;
         super.start();
     }
     
@@ -146,7 +147,7 @@ public abstract class ChestInteractionGoal extends Goal {
             return candidateEntity instanceof ChestBlockEntity;
         }).orElse(null);
         
-        if (pos == null && !entity.getSearchStartPos().isWithinDistance(entity.getBlockPos(), 20)) {
+        if (pos == null && !entity.getSearchStartPos().isWithinDistance(entity.getBlockPos(), 8)) {
             pos = BlockPos.findClosest(entity.getSearchStartPos(), 8, 8, candidate -> {
                 if (time - emptyChestTimings.getOrDefault(candidate, 0L) < 400)
                     return false;
