@@ -7,9 +7,9 @@ import rearth.excavations.Excavation;
 import rearth.excavations.ExcavationClient;
 
 @Mod(value = Excavation.MOD_ID, dist = Dist.CLIENT)
-public class ExcavationClientModNeoForge {
+public class ExcavationsClientNeoforge {
     
-    public ExcavationClientModNeoForge(IEventBus eventBus) {
+    public ExcavationsClientNeoforge(IEventBus eventBus) {
         ExcavationClient.init();
     }
     

@@ -7,6 +7,12 @@ architectury {
     neoForge()
 }
 
+repositories {
+    flatDir{
+        dirs 'E:/Workspace/MC/oritech/architectury/neoforge/build/libs'
+    }
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -41,7 +47,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
     // oritech + deps
-    // modImplementation "curse.maven:oritech-1030830:6769004" // todo figure out a way to fix this somehow?
+    // modImplementation name: "oritech-neoforge-0.17.3"   // currently pointing to local copy. This will be fixed in the future.
     include modApi("dev.technici4n:GrandPower:3.0.2")
     modImplementation "io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21"
     modImplementation "software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7.5.1"
