@@ -20,6 +20,9 @@
     ],
     "client": [
       "rearth.excavations.fabric.client.ExampleModFabricClient"
+    ],
+    "fabric-datagen": [
+      "rearth.excavations.fabric.ExcavationsDataGeneratorFabric"
     ]
   },
   "mixins": [
