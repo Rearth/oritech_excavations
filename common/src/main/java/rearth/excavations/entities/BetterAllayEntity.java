@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.FlyGoal;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
@@ -84,7 +85,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         this.goalSelector.add(3, new FindPickaxeGoal(this));
         this.goalSelector.add(3, new DepositItemsGoal(this));
         this.goalSelector.add(3, new MineNearbyBlockGoal(this));
-        this.goalSelector.add(5, new FlyToStone(this, TagContent.ALLAY_MINEABLE, 1f, 0.3f, 12f));
+        this.goalSelector.add(5, new FlyToStone(this, TagContent.ALLAY_MINEABLE, 1f, 0.3f, 8f));
         this.goalSelector.add(8, new FlyToTagGoal(this, BlockTags.BEACON_BASE_BLOCKS, 7, 3, 40f));
         
         this.goalSelector.add(10, new FlyGoal(this, MAX_SPEED / 2f) {
@@ -101,7 +102,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, inventory.heldStacks, true, this.getWorld().getRegistryManager());
-        lastChest = BlockPos.fromLong(nbt.getLong("home"));
+        nbt.putLong("home", lastChest.asLong());
         
         if (!getSyncedTool().isEmpty()) {
             nbt.put("tool", getSyncedTool().encode(getWorld().getRegistryManager()));
@@ -114,12 +115,26 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         Inventories.readNbt(nbt, inventory.heldStacks, getWorld().getRegistryManager());
-        nbt.putLong("home", lastChest.asLong());
+        lastChest = BlockPos.fromLong(nbt.getLong("home"));
         
         if (nbt.contains("tool")) {
             setSyncedTool(ItemStack.fromNbtOrEmpty(getWorld().getRegistryManager(), nbt.getCompound("tool")));
         }
         
+    }
+    
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        
+        for (var stack : inventory.heldStacks) {
+            if (stack.isEmpty()) continue;
+            getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), stack.copy()));
+        }
+        
+        if (!getSyncedTool().isEmpty())
+            getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), getSyncedTool().copy()));
+        
+        super.onDeath(damageSource);
     }
     
     public static DefaultAttributeContainer.Builder createMobAttributes() {
@@ -170,7 +185,6 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     }
     
     public BlockPos getSearchStartPos() {
-        System.out.println(lastChest);
         if (lastChest.equals(BlockPos.ORIGIN))
             return this.getBlockPos();
         return lastChest;

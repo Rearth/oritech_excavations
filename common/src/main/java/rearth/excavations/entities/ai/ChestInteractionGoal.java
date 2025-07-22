@@ -34,6 +34,7 @@ public abstract class ChestInteractionGoal extends Goal {
         
         var chestCandidate = findClosestChest();
         if (chestCandidate != null) {
+            System.out.println("target chest: " + chestCandidate);
             targetChest = chestCandidate;
             return true;
         }
@@ -65,8 +66,7 @@ public abstract class ChestInteractionGoal extends Goal {
     
     @Override
     public boolean shouldContinue() {
-        return entity.getSyncedTool().isEmpty()
-                 && !this.targetChest.equals(BlockPos.ORIGIN)
+        return !this.targetChest.equals(BlockPos.ORIGIN)
                  && entity.getWorld().getBlockEntity(this.targetChest) instanceof ChestBlockEntity;
     }
     
@@ -139,7 +139,7 @@ public abstract class ChestInteractionGoal extends Goal {
         
         var time = entity.getWorld().getTime();
         
-        var pos = BlockPos.findClosest(entity.getBlockPos(), 8, 8, candidate -> {
+        var pos = BlockPos.findClosest(entity.getBlockPos(), 12, 12, candidate -> {
             if (time - emptyChestTimings.getOrDefault(candidate, 0L) < 400)
                 return false;
             

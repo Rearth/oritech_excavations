@@ -94,7 +94,7 @@ public class MineNearbyBlockGoal extends Goal {
             this.entity.getWorld().breakBlock(this.targetBlock, false, this.entity);
             var tool = this.entity.getSyncedTool();
             tool.getItem().postMine(tool, entity.getWorld(), targetState, targetBlock, this.entity);
-            tool.damage(3, this.entity, EquipmentSlot.MAINHAND);
+            tool.damage(5, this.entity, EquipmentSlot.MAINHAND);
             
             this.entity.setSyncedTool(tool);
             
