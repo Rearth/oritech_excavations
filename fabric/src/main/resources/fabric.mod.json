@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "rearth.excavations.fabric.ExampleModFabric"
+      "rearth.excavations.fabric.ExcavationsFabric"
     ],
     "client": [
-      "rearth.excavations.fabric.client.ExampleModFabricClient"
+      "rearth.excavations.fabric.client.ExcavationsClientFabric"
     ],
     "fabric-datagen": [
       "rearth.excavations.fabric.ExcavationsDataGeneratorFabric"
