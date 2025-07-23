@@ -13,5 +13,6 @@ public final class ExcavationsFabric implements ModInitializer {
 
         // Run our common setup.
         Excavation.init();
+        Excavation.runAllRegistries();
     }
 }

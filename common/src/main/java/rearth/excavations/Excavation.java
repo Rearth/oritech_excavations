@@ -1,6 +1,10 @@
 package rearth.excavations;
 
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +17,10 @@ import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
 public final class Excavation {
     public static final String MOD_ID = "oritech_excavations";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
+    
+    
+    public static final Multimap<Identifier, Runnable> EVENT_MAP = initEventMap();
+    
     public static void init() {
         // Write common init code here.
         LOGGER.info("Hello from oritech excavations");
@@ -21,9 +28,36 @@ public final class Excavation {
         LOGGER.info("Oritech id: " + Oritech.MOD_ID);
         
         MobContent.init();
+    }
+    
+    // fabric only
+    public static void runAllRegistries() {
         
-        ArchitecturyRegistryContainer.register(ItemContent.class, MOD_ID, false);
-        ArchitecturyRegistryContainer.register(ItemGroups.class, MOD_ID, false);
+        LOGGER.info("Running Oritech registrations...");
+        
+        // fluids need to be first
+        LOGGER.debug("Registering fluids");
+        EVENT_MAP.get(RegistryKeys.FLUID.getValue()).forEach(Runnable::run);
+        
+        for (var type : EVENT_MAP.keySet()) {
+            if (type.equals(RegistryKeys.FLUID.getValue()) || type.equals(RegistryKeys.ITEM_GROUP.getValue())) continue;
+            EVENT_MAP.get(type).forEach(Runnable::run);
+        }
+        
+        LOGGER.debug("Registering item groups");
+        EVENT_MAP.get(RegistryKeys.ITEM_GROUP.getValue()).forEach(Runnable::run);
+        LOGGER.info("Oritech registrations complete");
+    }
+    
+    private static Multimap<Identifier, Runnable> initEventMap() {
+        
+        Multimap<Identifier, Runnable> res = ArrayListMultimap.create();
+        
+        res.put(RegistryKeys.ITEM.getValue(), () -> ArchitecturyRegistryContainer.register(ItemContent.class, MOD_ID, false));
+        res.put(RegistryKeys.ITEM_GROUP.getValue(), () -> ArchitecturyRegistryContainer.register(ItemGroups.class, MOD_ID, false));
+        
+        return res;
+        
     }
     
     public static Identifier id(String path) {

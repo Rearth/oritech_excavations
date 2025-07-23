@@ -104,7 +104,7 @@ public class MineNearbyBlockGoal extends Goal {
                 entity.getWorld().spawnEntity(new ItemEntity(entity.getWorld(), entity.prevX, entity.prevY, entity.prevZ, remains));
             }
             
-            System.out.println(entity.getInventory().heldStacks);
+            System.out.println(entity.getInventory().getHeldStacks());
             
             if (this.entity.getWorld() instanceof ServerWorld serverWorld) {
                 serverWorld.setBlockBreakingInfo(entity.getId(), targetBlock, 0);
