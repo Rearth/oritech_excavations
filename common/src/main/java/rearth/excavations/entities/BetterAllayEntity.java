@@ -101,7 +101,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory.heldStacks, true, this.getWorld().getRegistryManager());
+        Inventories.writeNbt(nbt, inventory.getHeldStacks(), true, this.getWorld().getRegistryManager());
         nbt.putLong("home", lastChest.asLong());
         
         if (!getSyncedTool().isEmpty()) {
@@ -114,7 +114,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        Inventories.readNbt(nbt, inventory.heldStacks, getWorld().getRegistryManager());
+        Inventories.readNbt(nbt, inventory.getHeldStacks(), getWorld().getRegistryManager());
         lastChest = BlockPos.fromLong(nbt.getLong("home"));
         
         if (nbt.contains("tool")) {
@@ -126,7 +126,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     @Override
     public void onDeath(DamageSource damageSource) {
         
-        for (var stack : inventory.heldStacks) {
+        for (var stack : inventory.getHeldStacks()) {
             if (stack.isEmpty()) continue;
             getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), stack.copy()));
         }
@@ -325,7 +325,7 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
             if (entity.getWorld().getBlockEntity(targetChest) instanceof ChestBlockEntity chestEntity) {
                 var chestCandidate = ItemApi.BLOCK.find(entity.getWorld(), targetChest, null);
                 if (chestCandidate != null) {
-                    var toTransfer = entity.inventory.heldStacks;
+                    var toTransfer = entity.inventory.getHeldStacks();
                     for (var stack : toTransfer) {
                         var inserted = chestCandidate.insert(stack, false);
                         System.out.println("moved: " + stack + " | " + inserted);

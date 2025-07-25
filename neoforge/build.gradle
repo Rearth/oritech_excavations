@@ -11,12 +11,6 @@ loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 }
 
-repositories {
-    flatDir{
-        dirs 'E:/Workspace/MC/oritech/architectury/neoforge/build/libs'
-    }
-}
-
 configurations {
     common {
         canBeResolved = true
@@ -51,7 +45,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
     // oritech + deps
-    modImplementation name: "oritech-neoforge-0.17.3-dev-shadow"   // currently pointing to local copy. This will be fixed in the future.
+    modImplementation name: "oritech-neoforge-0.17.4-dev-shadow"   // currently pointing to local copy. This will be fixed in the future.
     include modApi("dev.technici4n:GrandPower:3.0.2")
     modImplementation "io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21"
     forgeRuntimeLibrary(include(api("io.wispforest:endec:0.1.8")))

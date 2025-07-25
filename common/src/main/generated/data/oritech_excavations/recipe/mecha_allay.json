@@ -1,0 +1,26 @@
+{
+  "type": "oritech_excavations:allay_creator",
+  "fluidInput": {
+    "amount": 0,
+    "fluid": "minecraft:empty"
+  },
+  "fluidOutputs": [],
+  "ingredients": [
+    {
+      "item": "oritech:unholy_intelligence"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritech_excavations:better_allay_egg"
+    }
+  ],
+  "time": 200
+}

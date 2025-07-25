@@ -3,14 +3,13 @@ package rearth.excavations;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.ComposterBlock;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rearth.excavations.init.ItemContent;
-import rearth.excavations.init.ItemGroups;
-import rearth.excavations.init.MobContent;
+import rearth.excavations.client.ScreenContent;
+import rearth.excavations.init.*;
+import rearth.excavations.util.ExcavationRecipeRegistryContainer;
 import rearth.oritech.Oritech;
 import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
 
@@ -33,7 +32,7 @@ public final class Excavation {
     // fabric only
     public static void runAllRegistries() {
         
-        LOGGER.info("Running Oritech registrations...");
+        LOGGER.info("Running Excavation registrations...");
         
         // fluids need to be first
         LOGGER.debug("Registering fluids");
@@ -46,7 +45,7 @@ public final class Excavation {
         
         LOGGER.debug("Registering item groups");
         EVENT_MAP.get(RegistryKeys.ITEM_GROUP.getValue()).forEach(Runnable::run);
-        LOGGER.info("Oritech registrations complete");
+        LOGGER.info("Oritech Excavation complete");
     }
     
     private static Multimap<Identifier, Runnable> initEventMap() {
@@ -54,7 +53,12 @@ public final class Excavation {
         Multimap<Identifier, Runnable> res = ArrayListMultimap.create();
         
         res.put(RegistryKeys.ITEM.getValue(), () -> ArchitecturyRegistryContainer.register(ItemContent.class, MOD_ID, false));
+        res.put(RegistryKeys.BLOCK.getValue(), () -> ArchitecturyRegistryContainer.register(BlockContent.class, MOD_ID, false));
+        res.put(RegistryKeys.BLOCK_ENTITY_TYPE.getValue(), () -> ArchitecturyRegistryContainer.register(BlockEntitiesContent.class, MOD_ID, false));
+        res.put(RegistryKeys.RECIPE_TYPE.getValue(), () -> ArchitecturyRegistryContainer.register(RecipeContent.class, MOD_ID, false));
+        res.put(RegistryKeys.SCREEN_HANDLER.getValue(), () -> ArchitecturyRegistryContainer.register(ScreenContent.class, MOD_ID, false));
         res.put(RegistryKeys.ITEM_GROUP.getValue(), () -> ArchitecturyRegistryContainer.register(ItemGroups.class, MOD_ID, false));
+        res.put(RegistryKeys.RECIPE_SERIALIZER.getValue(), ExcavationRecipeRegistryContainer::finishSerializerRegister);
         
         return res;
         

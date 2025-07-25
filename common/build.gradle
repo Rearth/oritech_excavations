@@ -4,6 +4,16 @@ architectury {
 
 loom.accessWidenerPath.set(file("src/main/resources/oritech_excavations.accesswidener"))
 
+sourceSets {
+    main {
+        resources.srcDir "src/main/generated"
+    }
+}
+
+tasks.withType(AbstractCopyTask).configureEach {
+    setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
 dependencies {
     // We depend on Fabric Loader here to use the Fabric @Environment annotations,
     // which get remapped to the correct annotations on each platform.
@@ -14,7 +24,7 @@ dependencies {
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 
 
-    modCompileOnly "curse.maven:oritech-1030830:6769005"
+    modCompileOnly name: "oritech-fabric-0.17.4"
 
     // owo lib (or owo-lib-neoforge)
     modImplementation "io.wispforest:owo-lib:${owo_version}"
