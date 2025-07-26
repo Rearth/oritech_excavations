@@ -1,4 +1,4 @@
-package rearth.excavations.client;
+package rearth.excavations.client.init;
 
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.registry.Registry;

@@ -7,7 +7,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rearth.excavations.client.ScreenContent;
+import rearth.excavations.client.init.ScreenContent;
 import rearth.excavations.init.*;
 import rearth.excavations.util.ExcavationRecipeRegistryContainer;
 import rearth.oritech.Oritech;

@@ -2,7 +2,7 @@ package rearth.excavations;
 
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import rearth.excavations.client.BetterAllayRenderer;
-import rearth.excavations.client.ScreenContent;
+import rearth.excavations.client.init.ScreenContent;
 import rearth.excavations.init.MobContent;
 
 public class ExcavationClient {

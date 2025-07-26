@@ -7,7 +7,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import rearth.excavations.Excavation;
 import rearth.excavations.ExcavationClient;
-import rearth.excavations.client.RendererContent;
+import rearth.excavations.client.init.RendererContent;
 
 @Mod(value = Excavation.MOD_ID, dist = Dist.CLIENT)
 public class ExcavationsClientNeoforge {
