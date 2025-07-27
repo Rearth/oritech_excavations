@@ -38,7 +38,7 @@ public class MineNearbyBlockGoal extends Goal {
     
     private BlockPos findClosestStone() {
         return BlockPos.findClosest(this.entity.getBlockPos(), 3, 3, (pos) ->
-                                                                        this.entity.getWorld().getBlockState(pos).isIn(TagContent.ALLAY_MINEABLE))
+                                                                       this.entity.getWorld().getBlockState(pos).isIn(TagContent.ALLAY_MINEABLE))
                  .orElse(null);
     }
     
@@ -67,6 +67,13 @@ public class MineNearbyBlockGoal extends Goal {
             System.out.println("speed: " + speed);
             var hardness = targetState.getHardness(entity.getWorld(), targetBlock);
             var totalTime = hardness / speed * 20;
+            
+            if (entity.getWorld() instanceof ServerWorld serverWorld && entity.tryUseBoost()) {
+                totalTime = (float) Math.sqrt(totalTime);
+                var spawnAt = entity.getEyePos().addRandom(entity.getRandom(), 0.4f);
+                serverWorld.spawnParticles(ParticleTypes.TRIAL_SPAWNER_DETECTION, spawnAt.x, spawnAt.y, spawnAt.z, 2, 0, 0.3f, 0, 0);
+            }
+            
             workTime = (int) totalTime + 1;
         }
         System.out.println("starting mine goal");

@@ -47,6 +47,7 @@ import java.util.Iterator;
 public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner, GeoEntity {
     
     public static float MAX_SPEED = 0.6f;
+    public static int BOOSTER_DURATION = 6 * 20;
     
     public static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("fly");
     public static final RawAnimation WORK_ANIM = RawAnimation.begin().thenLoop("work");
@@ -55,7 +56,8 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
     
     public boolean resetStoneCache = false;
     public BlockPos lastChest = BlockPos.ORIGIN;
-    
+    private ItemStack heldBoosters = ItemStack.EMPTY;
+    private long boostedUntil = 0L;
     
     private final SimpleInventory inventory = new SimpleInventory(3);
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
@@ -108,6 +110,10 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
             nbt.put("tool", getSyncedTool().encode(getWorld().getRegistryManager()));
         }
         
+        if (!heldBoosters.isEmpty()) {
+            nbt.put("booster", heldBoosters.encode(getWorld().getRegistryManager()));
+        }
+        
         return super.writeNbt(nbt);
     }
     
@@ -120,6 +126,8 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         if (nbt.contains("tool")) {
             setSyncedTool(ItemStack.fromNbtOrEmpty(getWorld().getRegistryManager(), nbt.getCompound("tool")));
         }
+        
+        heldBoosters = ItemStack.fromNbtOrEmpty(getWorld().getRegistryManager(), nbt.getCompound("booster"));
         
     }
     
@@ -188,6 +196,32 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         if (lastChest.equals(BlockPos.ORIGIN))
             return this.getBlockPos();
         return lastChest;
+    }
+    
+    public boolean hasBoosterAvailable() {
+        return heldBoosters.getCount() > 0;
+    }
+    
+    public boolean canPickupBoosters() {
+        return !hasBoosterAvailable();
+    }
+    
+    public boolean isBoosted() {
+        return getWorld().getTime() < boostedUntil;
+    }
+    
+    public boolean tryUseBoost() {
+        if (isBoosted()) return true;
+        
+        if (hasBoosterAvailable()) {
+            heldBoosters.decrement(0);
+            if (heldBoosters.getCount() <= 0) heldBoosters = ItemStack.EMPTY;
+            System.out.println("used boost!");
+            boostedUntil = getWorld().getTime() + BOOSTER_DURATION;
+            return true;
+        }
+        
+        return false;
     }
     
     @Override
@@ -291,16 +325,26 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         @Override
         public boolean tryInventoryExchange() {
             if (entity.getWorld().getBlockEntity(targetChest) instanceof ChestBlockEntity chestEntity) {
-                // search for item
+                var hasPickaxe = false;
+                // search for pickaxe (or booster)
                 for (int i = 0; i < chestEntity.size(); i++) {
                     var candidateStack = chestEntity.getStack(i);
-                    if (candidateStack.getItem() instanceof MiningToolItem pickaxeItem && candidateStack.isIn(ItemTags.PICKAXES)) {
+                    
+                    if (entity.canPickupBoosters() && candidateStack.isIn(TagContent.ALLAY_BOOSTERS)) {
+                        var takenCount = Math.min(candidateStack.getCount(), 4);
+                        entity.heldBoosters = candidateStack.copyWithCount(takenCount);
+                        candidateStack.decrement(takenCount);
+                    }
+                    
+                    if (!hasPickaxe && candidateStack.getItem() instanceof MiningToolItem pickaxeItem && candidateStack.isIn(ItemTags.PICKAXES)) {
                         entity.setSyncedTool(candidateStack.copyWithCount(1));
                         candidateStack.decrement(1);
                         System.out.println("found pickaxe");
-                        return true;
+                        hasPickaxe = true;
                     }
                 }
+                
+                if (hasPickaxe) return true;
             }
             
             System.out.println("failed chest");
@@ -316,13 +360,29 @@ public class BetterAllayEntity extends PathAwareEntity implements InventoryOwner
         
         @Override
         public boolean canStart() {
-            if (entity.getInventory().getStack(2).isEmpty()) return false;  // only start if we have at least 1 stack, and slot 2 is started being used
+            if (entity.getInventory().getStack(2).isEmpty())
+                return false;  // only start if we have at least 1 stack, and slot 2 is started being used
             return super.canStart();
         }
         
         @Override
         public boolean tryInventoryExchange() {
             if (entity.getWorld().getBlockEntity(targetChest) instanceof ChestBlockEntity chestEntity) {
+                
+                // pickup boost
+                if (entity.canPickupBoosters()) {
+                    for (int i = 0; i < chestEntity.size(); i++) {
+                        var candidateStack = chestEntity.getStack(i);
+                        
+                        if (candidateStack.isIn(TagContent.ALLAY_BOOSTERS)) {
+                            var takenCount = Math.min(candidateStack.getCount(), 4);
+                            entity.heldBoosters = candidateStack.copyWithCount(takenCount);
+                            candidateStack.decrement(takenCount);
+                            break;
+                        }
+                    }
+                }
+                
                 var chestCandidate = ItemApi.BLOCK.find(entity.getWorld(), targetChest, null);
                 if (chestCandidate != null) {
                     var toTransfer = entity.inventory.getHeldStacks();
