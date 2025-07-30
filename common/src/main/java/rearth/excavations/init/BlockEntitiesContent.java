@@ -5,7 +5,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import rearth.excavations.blocks.assembler.AllayCreatorBlockEntity;
+import rearth.excavations.blocks.allay_creator.AllayCreatorBlockEntity;
+import rearth.excavations.blocks.shatterer.ShattererBlockEntity;
 import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.api.fluid.FluidApi;
 import rearth.oritech.api.item.ItemApi;
@@ -18,6 +19,10 @@ public class BlockEntitiesContent implements ArchitecturyRegistryContainer<Block
     @rearth.oritech.init.BlockEntitiesContent.AssignSidedInventory
     @rearth.oritech.init.BlockEntitiesContent.AssignSidedEnergy
     public static final BlockEntityType<AllayCreatorBlockEntity> ALLAY_CREATOR_BLOCK_ENTITY = BlockEntityType.Builder.create(AllayCreatorBlockEntity::new, BlockContent.ALLAY_CREATOR_BLOCK).build(null);
+    
+    @rearth.oritech.init.BlockEntitiesContent.AssignSidedInventory
+    @rearth.oritech.init.BlockEntitiesContent.AssignSidedEnergy
+    public static final BlockEntityType<ShattererBlockEntity> SHATTERER_BLOCK_ENTITY = BlockEntityType.Builder.create(ShattererBlockEntity::new, BlockContent.SHATTERER_BLOCK).build(null);
     
     
     @Override

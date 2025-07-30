@@ -1,4 +1,4 @@
-package rearth.excavations.blocks.assembler;
+package rearth.excavations.blocks.allay_creator;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnReason;
@@ -7,7 +7,6 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import rearth.excavations.client.init.ScreenContent;
@@ -80,10 +79,10 @@ public class AllayCreatorBlockEntity extends MultiblockMachineEntity implements 
     @Override
     public List<GuiSlot> getGuiSlots() {
         return List.of(
-          new GuiSlot(0, 20, 10),
-          new GuiSlot(1, 20, 30),
-          new GuiSlot(2, 20, 50),
-          new GuiSlot(3, 70, 30, true));
+          new GuiSlot(0, 50, 20),
+          new GuiSlot(1, 50, 40),
+          new GuiSlot(2, 50, 60),
+          new GuiSlot(3, 120, 35, true));
     }
     
     @Override

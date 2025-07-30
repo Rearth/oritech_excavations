@@ -10,7 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import rearth.excavations.blocks.assembler.AllayCreatorBlock;
+import rearth.excavations.blocks.allay_creator.AllayCreatorBlock;
+import rearth.excavations.blocks.shatterer.ShattererBlock;
 import rearth.oritech.item.OritechGeoItem;
 import rearth.oritech.util.registry.ArchitecturyBlockRegistryContainer;
 
@@ -24,6 +25,8 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     
     @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.7f)
     public static final Block ALLAY_CREATOR_BLOCK = new AllayCreatorBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
+    
+    public static final Block SHATTERER_BLOCK = new ShattererBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
     @Override
     public void postProcessField(String namespace, Block value, String identifier, Field field, RegistrySupplier<Block> supplier) {

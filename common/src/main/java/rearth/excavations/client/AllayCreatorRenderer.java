@@ -1,27 +1,17 @@
 package rearth.excavations.client;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import rearth.excavations.blocks.assembler.AllayCreatorBlockEntity;
+import rearth.excavations.blocks.allay_creator.AllayCreatorBlockEntity;
 import rearth.oritech.client.renderers.MachineRenderer;
 import rearth.oritech.util.Geometry;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class AllayCreatorRenderer extends MachineRenderer<AllayCreatorBlockEntity> {
     

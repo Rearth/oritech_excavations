@@ -17,6 +17,7 @@ public class ModelGenerator extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.ALLAY_CREATOR_BLOCK, Blocks.LIGHTNING_ROD);
+        blockStateModelGenerator.registerStateWithModelReference(BlockContent.SHATTERER_BLOCK, Blocks.LIGHTNING_ROD);
     }
     
     @Override

@@ -1,4 +1,4 @@
-package rearth.excavations.blocks.assembler;
+package rearth.excavations.blocks.allay_creator;
 
 import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
