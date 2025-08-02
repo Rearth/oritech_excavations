@@ -11,4 +11,6 @@ public class TagContent {
     public static final TagKey<Block> ALLAY_MINEABLE = TagKey.of(RegistryKeys.BLOCK, Excavation.id("allay_mineable"));
     public static final TagKey<Item> ALLAY_BOOSTERS = TagKey.of(RegistryKeys.ITEM, Excavation.id("allay_booster"));
     
+    public static final TagKey<Item> RANDOS = TagKey.of(RegistryKeys.ITEM, Excavation.id("randos"));
+    
 }

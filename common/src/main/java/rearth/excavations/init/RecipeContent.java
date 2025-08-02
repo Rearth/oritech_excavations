@@ -7,5 +7,6 @@ import rearth.oritech.init.recipes.OritechRecipeType;
 public class RecipeContent implements ExcavationRecipeRegistryContainer {
     
     public static final OritechRecipeType ALLAY_CREATOR = new OritechRecipeType(Excavation.id("allay_creator"));
+    public static final OritechRecipeType SHATTERER = new OritechRecipeType(Excavation.id("shatterer"));
     
 }

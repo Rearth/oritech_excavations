@@ -1,15 +1,26 @@
 package rearth.excavations.blocks.shatterer;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.joml.Vector2i;
 import rearth.excavations.init.BlockEntitiesContent;
+import rearth.excavations.init.RecipeContent;
 import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.api.energy.containers.SimpleEnergyStorage;
 import rearth.oritech.api.item.ItemApi;
@@ -18,16 +29,20 @@ import rearth.oritech.api.networking.NetworkedBlockEntity;
 import rearth.oritech.api.networking.SyncField;
 import rearth.oritech.api.networking.SyncType;
 import rearth.oritech.block.base.block.MultiblockMachine;
+import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.util.MultiblockMachineController;
+import rearth.oritech.util.SimpleCraftingInventory;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static rearth.oritech.block.base.entity.MachineBlockEntity.*;
@@ -38,10 +53,18 @@ import static rearth.oritech.block.base.entity.MachineBlockEntity.*;
 // when player is near the machine, the control panel hologram shows up
 public class ShattererBlockEntity extends NetworkedBlockEntity implements EnergyApi.BlockProvider, ItemApi.BlockProvider, MultiblockMachineController, GeoBlockEntity {
     
+    public static final RawAnimation SHOOT = RawAnimation.begin().thenPlay("fire");
+    
     // storage
     @SyncField({SyncType.INITIAL, SyncType.TICK})
-    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(1_000_000, 0, 5_000_000, this::markDirty);
-    public final SimpleInventoryStorage inventory = new SimpleInventoryStorage(1, this::markDirty);
+    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(250_000, 0, 5_000_000, this::markDirty);
+    @SyncField({SyncType.INITIAL, SyncType.TICK})
+    public final SimpleInventoryStorage inventory = new SimpleInventoryStorage(1, this::markDirty) {
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    };
     
     // multiblock
     private final ArrayList<BlockPos> coreBlocksConnected = new ArrayList<>();
@@ -55,7 +78,126 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
     
     @Override
     public void serverTick(World world, BlockPos blockPos, BlockState blockState, NetworkedBlockEntity networkedBlockEntity) {
+        
+        if (energyStorage.getAmount() >= energyStorage.getCapacity()) {
+            shoot();
+        }
+        
+    }
     
+    private void shoot() {
+        
+        var explosionPower = 5;
+        
+        var targetPos = findShotTarget();
+        
+        if (targetPos == null) return;
+        
+        energyStorage.setAmount(0);
+        energyStorage.update();
+        
+        triggerAnim("machine", "shoot");
+        
+        if (world instanceof ServerWorld serverWorld) {
+            var spawnAt = this.pos.toCenterPos();
+            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, spawnAt.x, spawnAt.y, spawnAt.z, 3, 0, 0, 0, 0);
+            serverWorld.spawnParticles(ParticleTypes.SONIC_BOOM, spawnAt.x, spawnAt.y - 3.5, spawnAt.z, 3, 0, 0, 0, 0);
+            for (int i = 0; i < 5; i++) {
+                spawnAt = this.pos.toCenterPos().addRandom(world.random, 5);
+                serverWorld.spawnParticles(ParticleTypes.POOF, spawnAt.x, spawnAt.y, spawnAt.z, 3, 0, 0, 0, 0);
+            }
+            serverWorld.playSound(null, pos, SoundEvents.ENTITY_BREEZE_CHARGE, SoundCategory.BLOCKS, 2.5f, 0.2f);
+            serverWorld.playSound(null, pos, SoundEvents.BLOCK_BAMBOO_WOOD_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1f, 1f);
+        }
+        
+        createShatteredArea(world, targetPos, explosionPower);
+        
+    }
+    
+    public static void createShatteredArea(World world, BlockPos targetPos, int explosionPower) {
+        world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+        world.createExplosion(null, targetPos.getX(), targetPos.getY(), targetPos.getZ(), explosionPower * 0.5f, false, World.ExplosionSourceType.BLOCK);
+        
+        var maxShatteredBlocks = explosionPower * explosionPower * explosionPower;
+        var shatteredBlocks = 0;
+        
+        // create shattered area
+        for (var candidatePos : BlockPos.iterateOutwards(targetPos, explosionPower * 2, (int) (explosionPower * 1.5f), explosionPower * 2)) {
+            var dist = candidatePos.getSquaredDistance(targetPos);
+            var candidateState = world.getBlockState(candidatePos);
+            if (candidateState.isAir() || candidateState.isLiquid()) continue;
+            if (world.getRandom().nextFloat() < dist / (explosionPower * explosionPower * 4f)) continue;
+            var recipeCandidate = getRecipeForBlock(candidateState, world);
+            if (recipeCandidate == null) continue;
+            
+            var resultItem = recipeCandidate.getResults().getFirst().getItem();
+            var block = Blocks.AIR.getDefaultState();
+            if (resultItem instanceof BlockItem blockItem)
+                block = blockItem.getBlock().getDefaultState();
+            
+            world.setBlockState(candidatePos, block, Block.NOTIFY_LISTENERS, 0);
+            shatteredBlocks += recipeCandidate.getTime();
+            if (shatteredBlocks > maxShatteredBlocks) {
+                break;
+            }
+        }
+    }
+    
+    private BlockPos findShotTarget() {
+        
+        var start = this.getPos().down(3);
+        
+        var blockedPositions = new HashSet<Vector2i>();
+        
+        for (int i = 0; i < 1024; i++) {
+            
+            // this is set to false if we encounter air anywhere
+            var layerBlocked = true;
+            var center = start.down(i);
+            
+            var width = Math.clamp(i / 8, 1, 16);
+            
+            for (int x = -width; x < width; x++) {
+                for (int z = -width; z < width; z++) {
+                    
+                    var offset = new Vector2i(x, z);
+                    if (blockedPositions.contains(offset)) continue;
+                    
+                    var checkPos = center.add(x, 0, z);
+                    var checkState = world.getBlockState(checkPos);
+                    
+                    if (checkState.isAir()) {
+                        layerBlocked = false;
+                        continue;
+                    }
+                    
+                    var recipeCandidate = getRecipeForBlock(checkState, world);
+                    if (recipeCandidate != null) {
+                        return checkPos;
+                    } else {
+                        blockedPositions.add(offset);
+                    }
+                    
+                }
+            }
+            
+            if (layerBlocked) return null;
+            
+        }
+        
+        return null;
+        
+    }
+    
+    public static OritechRecipe getRecipeForBlock(BlockState state, World world) {
+        
+        var input = state.getBlock().asItem();
+        if (input == null) return null;
+        
+        var recipeInv = new SimpleCraftingInventory(new ItemStack(input));
+        var candidate = world.getRecipeManager().getFirstMatch(RecipeContent.SHATTERER, recipeInv, world);
+        return candidate.map(RecipeEntry::value).orElse(null);
+        
     }
     
     @Override
@@ -165,14 +307,14 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "machine", state -> {
-            if (state.getController().isPlayingTriggeredAnimation()) {
+            if (state.getController().isPlayingTriggeredAnimation() && !state.getController().hasAnimationFinished()) {
                 return PlayState.CONTINUE;
             } else if (this.isAssembled(this.getCachedState())) {
                 return state.setAndContinue(IDLE);
             } else {
                 return state.setAndContinue(PACKAGED);
             }
-        }).triggerableAnim("setup", SETUP));
+        }).triggerableAnim("setup", SETUP).triggerableAnim("shoot", SHOOT));
     }
     
     public boolean isAssembled(BlockState state) {

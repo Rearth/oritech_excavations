@@ -23,5 +23,11 @@ public class ItemTagGenerator extends FabricTagProvider<Item> {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         getOrCreateTagBuilder(TagContent.ALLAY_BOOSTERS)
           .add(ItemContent.FLUXITE);
+        
+        getOrCreateTagBuilder(TagContent.RANDOS)
+          .add(Items.GRANITE)
+          .add(Items.ANDESITE)
+          .add(Items.DIORITE)
+          .add(Items.GRAVEL);
     }
 }

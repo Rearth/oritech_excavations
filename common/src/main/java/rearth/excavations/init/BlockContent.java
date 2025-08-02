@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import rearth.excavations.blocks.ExplosiveChargeBlock;
 import rearth.excavations.blocks.allay_creator.AllayCreatorBlock;
 import rearth.excavations.blocks.shatterer.ShattererBlock;
 import rearth.oritech.item.OritechGeoItem;
@@ -26,7 +27,13 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.7f)
     public static final Block ALLAY_CREATOR_BLOCK = new AllayCreatorBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
+    @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.4f)
     public static final Block SHATTERER_BLOCK = new ShattererBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
+    
+    public static final Block WEAK_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 3);
+    public static final Block MEDIUM_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 5);
+    public static final Block STRONG_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 7);
+    public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 9);
     
     @Override
     public void postProcessField(String namespace, Block value, String identifier, Field field, RegistrySupplier<Block> supplier) {
