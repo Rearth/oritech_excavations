@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "oritech_excavations:block/strong_charge_block",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "oritech_excavations:block/strong_charge_block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "oritech_excavations:block/strong_charge_block",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "oritech_excavations:block/strong_charge_block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "oritech_excavations:block/strong_charge_block"
+    },
+    "facing=west": {
+      "model": "oritech_excavations:block/strong_charge_block",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

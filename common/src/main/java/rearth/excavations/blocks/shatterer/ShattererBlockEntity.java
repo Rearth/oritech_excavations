@@ -3,6 +3,7 @@ package rearth.excavations.blocks.shatterer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -14,11 +15,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
+import rearth.excavations.blocks.ExplosiveChargeBlock;
 import rearth.excavations.init.BlockEntitiesContent;
 import rearth.excavations.init.RecipeContent;
 import rearth.oritech.api.energy.EnergyApi;
@@ -28,7 +32,10 @@ import rearth.oritech.api.item.containers.SimpleInventoryStorage;
 import rearth.oritech.api.networking.NetworkedBlockEntity;
 import rearth.oritech.api.networking.SyncField;
 import rearth.oritech.api.networking.SyncType;
+import rearth.oritech.block.base.block.MachineBlock;
 import rearth.oritech.block.base.block.MultiblockMachine;
+import rearth.oritech.block.blocks.processing.MachineCoreBlock;
+import rearth.oritech.client.init.ParticleContent;
 import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.util.MultiblockMachineController;
 import rearth.oritech.util.SimpleCraftingInventory;
@@ -42,6 +49,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -57,14 +65,24 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
     
     // storage
     @SyncField({SyncType.INITIAL, SyncType.TICK})
-    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(250_000, 0, 5_000_000, this::markDirty);
+    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(250_000, 0, 10_000_000, this::markDirty);
     @SyncField({SyncType.INITIAL, SyncType.TICK})
     public final SimpleInventoryStorage inventory = new SimpleInventoryStorage(1, this::markDirty) {
         @Override
         public int getSlotLimit(int slot) {
             return 1;
         }
+        
+        @Override
+        public int insertToSlot(ItemStack addedStack, int slot, boolean simulate) {
+            if (!(addedStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ExplosiveChargeBlock))
+                return 0;
+            return super.insertToSlot(addedStack, slot, simulate);
+        }
     };
+    
+    private boolean hasSupports = false;
+    private long lastFiredAt;
     
     // multiblock
     private final ArrayList<BlockPos> coreBlocksConnected = new ArrayList<>();
@@ -79,7 +97,12 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
     @Override
     public void serverTick(World world, BlockPos blockPos, BlockState blockState, NetworkedBlockEntity networkedBlockEntity) {
         
-        if (energyStorage.getAmount() >= energyStorage.getCapacity()) {
+        if (!blockState.get(MultiblockMachine.ASSEMBLED)) return;
+        
+        if (!hasSupports && world.getTime() % 124 == 0)
+            initSupports();
+        
+        if (hasSupports && energyStorage.getAmount() >= energyStorage.getCapacity() && !inventory.isEmpty()) {
             shoot();
         }
         
@@ -87,14 +110,20 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
     
     private void shoot() {
         
-        var explosionPower = 5;
-        
         var targetPos = findShotTarget();
         
         if (targetPos == null) return;
         
-        energyStorage.setAmount(0);
+        var takenStack = inventory.getStack(0);
+        var explosionPower = 1;
+        inventory.setStack(0, ItemStack.EMPTY);
+        if (takenStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ExplosiveChargeBlock explosiveChargeBlock) {
+            explosionPower = explosiveChargeBlock.power;
+        }
+        
+        energyStorage.extractIgnoringLimit(explosionPower * 1_000_000L, false);
         energyStorage.update();
+        lastFiredAt = world.getTime();
         
         triggerAnim("machine", "shoot");
         
@@ -109,6 +138,8 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
             serverWorld.playSound(null, pos, SoundEvents.ENTITY_BREEZE_CHARGE, SoundCategory.BLOCKS, 2.5f, 0.2f);
             serverWorld.playSound(null, pos, SoundEvents.BLOCK_BAMBOO_WOOD_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1f, 1f);
         }
+        
+        ParticleContent.LASER_BOOM.spawn(world, pos.down(3).toCenterPos(), targetPos.toCenterPos());
         
         createShatteredArea(world, targetPos, explosionPower);
         
@@ -189,6 +220,79 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
         
     }
     
+    private void initSupports() {
+        
+        hasSupports = true;
+        
+        var startOffsets = List.of(
+          new Vec3i(2, -1, 1),
+          new Vec3i(2, -1, -1),
+          new Vec3i(-2, -1, 1),
+          new Vec3i(-2, -1, -1),
+          new Vec3i(1, -1, 2),
+          new Vec3i(-1, -1, 2),
+          new Vec3i(1, -1, -2),
+          new Vec3i(-1, -1, -2)
+        );
+        
+        for (var offset : startOffsets) {
+            var worldPos = pos.add(offset);
+            
+            // start floodfill, ignore core blocks and going till a specific hardness is found
+            
+            var openPositions = new HashSet<BlockPos>();
+            var checkedPositions = new HashSet<BlockPos>();
+            var maxIterations = 90;
+            var foundHardness = 0f;
+            
+            openPositions.add(worldPos);
+            
+            for (int i = 0; i < maxIterations; i++) {
+                
+                var checked = new HashSet<BlockPos>();
+                var toAdd = new HashSet<BlockPos>();
+                for (var openPos : openPositions) {
+                    checkedPositions.add(openPos);
+                    checked.add(openPos);
+                    var openState = world.getBlockState(openPos);
+                    if (openState.isAir() || openState.getBlock() instanceof MachineCoreBlock) continue;
+                    if (openState.getHardness(world, openPos) > 0.1f) {
+                        foundHardness += openState.getHardness(world, openPos);
+                        
+                        // add neighboring positions to queue
+                        Arrays.stream(getNeighbors(openPos)).filter(elem -> !checkedPositions.contains(elem)).forEach(toAdd::add);
+                        
+                    }
+                }
+                openPositions.removeAll(checked);
+                openPositions.addAll(toAdd);
+                
+                if (openPositions.isEmpty()) break;
+                
+                if (foundHardness > 300) break;
+                
+            }
+            
+            if (foundHardness < 300) {
+                hasSupports = false;
+                ParticleContent.HIGHLIGHT_BLOCK.spawn(world, Vec3d.of(worldPos));
+                break;
+            }
+        }
+        
+    }
+    
+    private static BlockPos[] getNeighbors(BlockPos from) {
+        return new BlockPos[]{
+          from.add(0, 1, 0),
+          from.add(0, -1, 0),
+          from.add(1, 0, 0),
+          from.add(-1, 0, 0),
+          from.add(0, 0, 1),
+          from.add(0, 0, -1)
+        };
+    }
+    
     public static OritechRecipe getRecipeForBlock(BlockState state, World world) {
         
         var input = state.getBlock().asItem();
@@ -200,12 +304,30 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
         
     }
     
+    public void getStatus(PlayerEntity player) {
+        
+        var status = "no_target";
+        
+        if (!hasSupports) {
+            status = "no_support";
+        } else if (inventory.isEmpty()) {
+            status = "no_ammo";
+        } else if (energyStorage.getAmount() <= 0) {
+            status = "no_energy";
+        } else if (world.getTime() - lastFiredAt < 100) {
+            status = "working";
+        }
+        
+        player.sendMessage(Text.translatable("hint.oritech_excatations." + status));
+    }
+    
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, inventory.heldStacks, false, registryLookup);
         addMultiblockToNbt(nbt);
         nbt.putLong("energy", energyStorage.getAmount());
+        nbt.putBoolean("support", hasSupports);
     }
     
     @Override
@@ -214,6 +336,7 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
         Inventories.readNbt(nbt, inventory.heldStacks, registryLookup);
         loadMultiblockNbtData(nbt);
         energyStorage.setAmount(nbt.getLong("energy"));
+        hasSupports = nbt.getBoolean("support");
     }
     
     @Override

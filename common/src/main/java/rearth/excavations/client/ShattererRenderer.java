@@ -42,9 +42,9 @@ public class ShattererRenderer extends MachineRenderer<ShattererBlockEntity> {
         var inputStack = entity.inventory.getStack(0);
         if (!inputStack.isEmpty()) {
             matrices.push();
-            matrices.translate(0.5F, 0.7F, 0.5F);
+            matrices.translate(0.5F, 0.9F, 0.5F);
             
-            var scale = 0.6f;
+            var scale = 1.2f;
             matrices.scale(scale, scale, scale);
             
             var rotation = (entity.getWorld().getTime() + partialTick) * 6;

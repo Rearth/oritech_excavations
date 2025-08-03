@@ -3,13 +3,16 @@ package rearth.excavations.blocks.shatterer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import rearth.excavations.blocks.ExplosiveChargeBlock;
 import rearth.excavations.init.BlockEntitiesContent;
 import rearth.oritech.block.base.block.MultiblockMachine;
 import rearth.oritech.block.blocks.processing.MachineCoreBlock;
@@ -31,7 +34,7 @@ public class ShattererBlock extends MultiblockMachine {
     @Override
     public ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         
-        if (!world.isClient && stack.getItem().equals(ItemContent.FLUXITE)) {
+        if (!world.isClient && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ExplosiveChargeBlock) {
             
             if (state.getBlock() instanceof MachineCoreBlock coreBlock) {
                 pos = getControllerPos(world, pos);
@@ -52,5 +55,17 @@ public class ShattererBlock extends MultiblockMachine {
         
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
         
+    }
+    
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        
+        var shatterer = world.getBlockEntity(pos, BlockEntitiesContent.SHATTERER_BLOCK_ENTITY);
+        if (!world.isClient && state.get(ASSEMBLED) && shatterer.isPresent()) {
+            shatterer.get().getStatus(player);
+            return ActionResult.SUCCESS;
+        }
+        
+        return super.onUse(state, world, pos, player, hit);
     }
 }

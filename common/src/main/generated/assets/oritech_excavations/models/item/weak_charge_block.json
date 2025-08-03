@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "oritech_excavations:item/weak_charge_block"
+  }
+}
