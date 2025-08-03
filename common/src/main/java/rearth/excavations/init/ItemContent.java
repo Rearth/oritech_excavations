@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Colors;
+import net.minecraft.util.Rarity;
 import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
 
 import java.lang.reflect.Field;

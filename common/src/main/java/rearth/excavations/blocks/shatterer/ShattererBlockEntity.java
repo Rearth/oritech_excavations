@@ -318,7 +318,7 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
             status = "working";
         }
         
-        player.sendMessage(Text.translatable("hint.oritech_excatations." + status));
+        player.sendMessage(Text.translatable("hint.oritech_excavations." + status));
     }
     
     @Override

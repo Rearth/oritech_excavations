@@ -1,0 +1,16 @@
+{
+  "hint.oritech_excavations.no_target": "No target found.",
+  "hint.oritech_excavations.no_support": "The machine lacks structural support. Ensure all structural attachments in the corners are connected to solid ground",
+  "hint.oritech_excavations.no_ammo": "No explosive charge loaded.",
+  "hint.oritech_excavations.no_energy": "Insufficient energy to operate.",
+  "hint.oritech_excavations.working": "The machine is currently working.",
+  "itemgroup.oritech_excavations.main": "Excavation Tools",
+  "block.oritech_excavations.weak_charge_block": "Weak Seismic Charge",
+  "block.oritech_excavations.medium_charge_block": "Medium Seismic Charge",
+  "block.oritech_excavations.strong_charge_block": "Strong Seismic Charge",
+  "block.oritech_excavations.extreme_charge_block": "Extreme Seismic Charge",
+  "block.oritech_excavations.allay_creator_block": "Intelligence Producer",
+  "item.oritech_excavations.better_allay_egg": "Production Allay Spawn Egg",
+  "entity.oritech_excavations.better_allay": "Production Allay",
+  "block.oritech_excavations.shatterer_block": "Shatterer"
+}
