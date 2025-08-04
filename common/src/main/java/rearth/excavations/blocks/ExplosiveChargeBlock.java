@@ -3,7 +3,6 @@ package rearth.excavations.blocks;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -16,21 +15,23 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 import rearth.excavations.blocks.shatterer.ShattererBlockEntity;
-import rearth.excavations.init.ItemContent;
 
 import java.util.function.BiConsumer;
 
 public class ExplosiveChargeBlock extends FacingBlock {
     
-    public final int power;
+    public final int explosionPower;
+    public final int rfNeeded;
+    public final int shatterPower;
     
-    public ExplosiveChargeBlock(Settings settings, int power) {
+    public ExplosiveChargeBlock(Settings settings, int explosionPower, int rfNeeded, int shatterPower) {
         super(settings);
-        this.power = power;
+        this.explosionPower = explosionPower;
+        this.rfNeeded = rfNeeded;
+        this.shatterPower = shatterPower;
         setDefaultState(getDefaultState().with(FACING, Direction.UP));
     }
     
@@ -82,7 +83,7 @@ public class ExplosiveChargeBlock extends FacingBlock {
     }
     
     private void explode(World world, BlockPos pos) {
-        ShattererBlockEntity.createShatteredArea(world, pos, power);
+        ShattererBlockEntity.createShatteredArea(world, pos, explosionPower);
     }
     
 }

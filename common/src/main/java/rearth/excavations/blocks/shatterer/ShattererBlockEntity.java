@@ -32,7 +32,6 @@ import rearth.oritech.api.item.containers.SimpleInventoryStorage;
 import rearth.oritech.api.networking.NetworkedBlockEntity;
 import rearth.oritech.api.networking.SyncField;
 import rearth.oritech.api.networking.SyncType;
-import rearth.oritech.block.base.block.MachineBlock;
 import rearth.oritech.block.base.block.MultiblockMachine;
 import rearth.oritech.block.blocks.processing.MachineCoreBlock;
 import rearth.oritech.client.init.ParticleContent;
@@ -118,7 +117,7 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
         var explosionPower = 1;
         inventory.setStack(0, ItemStack.EMPTY);
         if (takenStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ExplosiveChargeBlock explosiveChargeBlock) {
-            explosionPower = explosiveChargeBlock.power;
+            explosionPower = explosiveChargeBlock.explosionPower;
         }
         
         energyStorage.extractIgnoringLimit(explosionPower * 1_000_000L, false);

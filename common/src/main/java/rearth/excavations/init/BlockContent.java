@@ -38,12 +38,12 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @Rarity(net.minecraft.util.Rarity.RARE)
     public static final Block SHATTERER_BLOCK = new ShattererBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
-    public static final Block WEAK_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 3);
-    public static final Block MEDIUM_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 5);
+    public static final Block WEAK_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 2, 250_000, 4);
+    public static final Block MEDIUM_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 4, 500_000, 8);
     @Rarity(net.minecraft.util.Rarity.RARE)
-    public static final Block STRONG_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 7);
+    public static final Block STRONG_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 8, 1_000_000, 16);
     @Rarity(net.minecraft.util.Rarity.EPIC)
-    public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 9);
+    public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 16, 4_000_000, 50);
     
     @Override
     public void postProcessField(String namespace, Block value, String identifier, Field field, RegistrySupplier<Block> supplier) {
