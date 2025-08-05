@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "oritech_excavations:item/allay_creator_block"
-  }
+  "parent": "oritech_excavations:block/allay_creator_block"
 }

@@ -1,0 +1,20 @@
+{
+  "type": "oritech_excavations:shatterer",
+  "fluidInput": {
+    "amount": 0,
+    "fluid": "minecraft:empty"
+  },
+  "fluidOutputs": [],
+  "ingredients": [
+    {
+      "item": "oritech_excavations:cracked_very_deep_slate"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritech_excavations:shattered_very_deep_slate"
+    }
+  ],
+  "time": 8
+}

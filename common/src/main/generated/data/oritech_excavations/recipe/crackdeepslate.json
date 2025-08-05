@@ -1,0 +1,20 @@
+{
+  "type": "oritech_excavations:shatterer",
+  "fluidInput": {
+    "amount": 0,
+    "fluid": "minecraft:empty"
+  },
+  "fluidOutputs": [],
+  "ingredients": [
+    {
+      "item": "minecraft:deepslate"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritech_excavations:cracked_deepslate"
+    }
+  ],
+  "time": 5
+}

@@ -28,6 +28,10 @@
       "id": "#minecraft:dirt",
       "required": false
     },
+    {
+      "id": "#oritech_excavations:harder_stones",
+      "required": false
+    },
     "minecraft:grass_block",
     "minecraft:clay",
     "minecraft:mud",

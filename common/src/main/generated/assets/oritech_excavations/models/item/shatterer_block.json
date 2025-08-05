@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "oritech_excavations:item/shatterer_block"
-  }
+  "parent": "oritech_excavations:block/shatterer_block"
 }

@@ -70,6 +70,8 @@ dependencies {
     modRuntimeOnly "curse.maven:oracle-index-1206582:6538216"
     implementation "org.jsoup:jsoup:1.17.2"
     modImplementation "curse.maven:jade-324717:5639994"
+    modImplementation "curse.maven:isometric-renders-483805:5432902"
+    modImplementation "io.wispforest:worldmesher:0.4.6+1.21"
 }
 
 processResources {

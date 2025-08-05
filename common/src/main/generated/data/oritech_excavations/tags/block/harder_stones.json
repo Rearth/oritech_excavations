@@ -1,0 +1,31 @@
+{
+  "values": [
+    "oritech_excavations:shattered_stone",
+    "oritech_excavations:hard_stone",
+    "oritech_excavations:harder_stone",
+    "oritech_excavations:harderer_stone",
+    "oritech_excavations:deeper_slate",
+    "oritech_excavations:very_deep_slate",
+    "oritech_excavations:deepest_slate",
+    "oritech_excavations:reinforced_obsidian",
+    "oritech_excavations:cracked_stone",
+    "oritech_excavations:shattered_hard_stone",
+    "oritech_excavations:cracked_hard_stone",
+    "oritech_excavations:shattered_harder_stone",
+    "oritech_excavations:cracked_harder_stone",
+    "oritech_excavations:shattered_harderer_stone",
+    "oritech_excavations:cracked_harderer_stone",
+    "oritech_excavations:cracked_deepslate",
+    "oritech_excavations:shattered_deepslate",
+    "oritech_excavations:cracked_deeper_slate",
+    "oritech_excavations:shattered_deeper_slate",
+    "oritech_excavations:cracked_very_deep_slate",
+    "oritech_excavations:shattered_very_deep_slate",
+    "oritech_excavations:cracked_deepest_slate",
+    "oritech_excavations:shattered_deepest_slate",
+    "oritech_excavations:cracked_obsidian",
+    "oritech_excavations:shattered_obsidian",
+    "oritech_excavations:cracked_reinforced_obsidian",
+    "oritech_excavations:shattered_reinforced_obsidian"
+  ]
+}

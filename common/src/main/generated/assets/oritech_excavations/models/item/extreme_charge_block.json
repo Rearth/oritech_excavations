@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "oritech_excavations:item/extreme_charge_block"
-  }
+  "parent": "oritech_excavations:block/extreme_charge_block"
 }

@@ -156,7 +156,12 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
             var dist = candidatePos.getSquaredDistance(targetPos);
             var candidateState = world.getBlockState(candidatePos);
             if (candidateState.isAir() || candidateState.isLiquid()) continue;
-            if (world.getRandom().nextFloat() < dist / (explosionPower * explosionPower * 4f)) continue;
+            if (world.getRandom().nextFloat() < dist / (explosionPower * explosionPower * 3f)) continue;
+            
+            if (candidateState.getBlock() instanceof ExplosiveChargeBlock explosiveChargeBlock) {
+                createShatteredArea(world, candidatePos, explosiveChargeBlock.explosionPower);
+            }
+            
             var recipeCandidate = getRecipeForBlock(candidateState, world);
             if (recipeCandidate == null) continue;
             
@@ -185,7 +190,7 @@ public class ShattererBlockEntity extends NetworkedBlockEntity implements Energy
             var layerBlocked = true;
             var center = start.down(i);
             
-            var width = Math.clamp(i / 8, 1, 16);
+            var width = Math.clamp(i / 2, 1, 16);
             
             for (int x = -width; x < width; x++) {
                 for (int z = -width; z < width; z++) {
