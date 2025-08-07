@@ -35,15 +35,16 @@ public final class Excavation {
         LOGGER.info("Running Excavation registrations...");
         
         // fluids need to be first
-        LOGGER.debug("Registering fluids");
+        LOGGER.debug("Registering early");
         EVENT_MAP.get(RegistryKeys.FLUID.getValue()).forEach(Runnable::run);
+        EVENT_MAP.get(RegistryKeys.DATA_COMPONENT_TYPE.getValue()).forEach(Runnable::run);
         
         for (var type : EVENT_MAP.keySet()) {
-            if (type.equals(RegistryKeys.FLUID.getValue()) || type.equals(RegistryKeys.ITEM_GROUP.getValue())) continue;
+            if (type.equals(RegistryKeys.FLUID.getValue()) || type.equals(RegistryKeys.ITEM_GROUP.getValue()) || type.equals(RegistryKeys.DATA_COMPONENT_TYPE.getValue())) continue;
             EVENT_MAP.get(type).forEach(Runnable::run);
         }
         
-        LOGGER.debug("Registering item groups");
+        LOGGER.debug("Registering late");
         EVENT_MAP.get(RegistryKeys.ITEM_GROUP.getValue()).forEach(Runnable::run);
         LOGGER.info("Oritech Excavation complete");
     }

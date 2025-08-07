@@ -17,6 +17,7 @@ import rearth.oritech.block.entity.interaction.LaserArmBlockEntity;
 import rearth.oritech.init.BlockContent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LaserRemote extends Item {
@@ -41,7 +42,7 @@ public class LaserRemote extends Item {
             // target the base instead (on laser arms)
             var machineEntity = MachineCoreBlock.getControllerEntity(context.getWorld(), context.getBlockPos());
             if (machineEntity instanceof LaserArmBlockEntity) {
-                targetPos = context.getBlockPos().down();
+                targetPos = machineEntity.getPos();
                 targetBlockState = context.getWorld().getBlockState(targetPos);
             }
         }
@@ -49,14 +50,17 @@ public class LaserRemote extends Item {
         
         // found laser, add to list
         if (targetBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK) && context.getWorld().getBlockEntity(targetPos) instanceof LaserArmBlockEntity laserEntity) {
-        
+            
             var componentList = stack.getOrDefault(ComponentContent.TARGET_POSITIONS.get(), new ArrayList<BlockPos>());
+            
+            if (!(componentList instanceof ArrayList<BlockPos>))
+                componentList = new ArrayList<>(componentList);
+            
             if (!componentList.contains(targetPos))
                 componentList.add(targetPos);
             
             context.getPlayer().sendMessage(Text.translatable("message.oritech_excavations.source_added"));
-            stack.set(ComponentContent.TARGET_POSITIONS.get(), componentList);
-            context.getPlayer().setStackInHand(context.getHand(), stack);
+            stack.set(ComponentContent.TARGET_POSITIONS.get(), Collections.unmodifiableList(componentList));
             return ActionResult.SUCCESS;
         }
         
