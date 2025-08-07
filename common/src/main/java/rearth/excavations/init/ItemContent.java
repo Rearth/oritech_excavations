@@ -9,6 +9,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Rarity;
+import rearth.excavations.item.LaserRemote;
 import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
 
 import java.lang.reflect.Field;
@@ -16,6 +17,7 @@ import java.lang.reflect.Field;
 public class ItemContent implements ArchitecturyRegistryContainer<Item> {
     
     public static final Item BETTER_ALLAY_EGG = new SpawnEggItem(MobContent.BETTER_ALLAY.get(), Colors.GREEN, Colors.LIGHT_GRAY, new Item.Settings());
+    public static final Item LASER_REDIRECTOR = new LaserRemote(new Item.Settings().maxCount(1));
     
     @Override
     public RegistryKey<Registry<Item>> getRegistryType() {

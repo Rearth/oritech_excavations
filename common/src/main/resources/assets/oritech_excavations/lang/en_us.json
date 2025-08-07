@@ -11,6 +11,7 @@
   "block.oritech_excavations.extreme_charge_block": "Extreme Seismic Charge",
   "block.oritech_excavations.allay_creator_block": "Intelligence Producer",
   "item.oritech_excavations.better_allay_egg": "Production Allay Spawn Egg",
+  "item.oritech_excavations.laser_redirector": "Laser Remote Designator",
   "entity.oritech_excavations.better_allay": "Production Allay",
   "block.oritech_excavations.shatterer_block": "Shatterer",
   "block.oritech_excavations.hard_stone": "Hard Stone",
@@ -39,5 +40,10 @@
   "block.oritech_excavations.cracked_obsidian": "Cracked Obsidian",
   "block.oritech_excavations.shattered_obsidian": "Shattered Obsidian",
   "block.oritech_excavations.cracked_reinforced_obsidian": "Cracked Reinforced Obsidian",
-  "block.oritech_excavations.shattered_reinforced_obsidian": "Shattered Reinforced Obsidian"
+  "block.oritech_excavations.shattered_reinforced_obsidian": "Shattered Reinforced Obsidian",
+  "message.oritech_excavations.source_added": "Laser source added.",
+  "message.oritech_excavations.no_laser_sources": "No laser sources selected.",
+  "message.oritech_excavations.laser_assigned": "Assigned %s laser(s) to target.",
+  "tooltip.oritech_excavations.designator_empty": "No laser sources selected.",
+  "message.oritech_excavations.designator_reset": "Laser designator reset."
 }
