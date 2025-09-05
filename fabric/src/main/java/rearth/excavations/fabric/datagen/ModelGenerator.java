@@ -2,12 +2,10 @@ package rearth.excavations.fabric.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
-import net.minecraft.data.client.TexturedModel;
 import net.minecraft.item.BlockItem;
 import rearth.excavations.init.BlockContent;
 import rearth.excavations.init.ItemGroups;
@@ -21,6 +19,7 @@ public class ModelGenerator extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.ALLAY_CREATOR_BLOCK, Blocks.LIGHTNING_ROD);
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.SHATTERER_BLOCK, Blocks.LIGHTNING_ROD);
+        blockStateModelGenerator.registerStateWithModelReference(BlockContent.DIGGER, Blocks.LIGHTNING_ROD);
         
         blockStateModelGenerator.registerRod(BlockContent.WEAK_CHARGE_BLOCK);
         blockStateModelGenerator.registerRod(BlockContent.MEDIUM_CHARGE_BLOCK);

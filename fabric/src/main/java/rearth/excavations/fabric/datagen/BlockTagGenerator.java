@@ -68,6 +68,7 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
           .add(BlockContent.ALLAY_CREATOR_BLOCK)
           .add(BlockContent.SHATTERER_BLOCK)
+          .add(BlockContent.DIGGER)
           .add(BlockContent.WEAK_CHARGE_BLOCK)
           .add(BlockContent.MEDIUM_CHARGE_BLOCK)
           .add(BlockContent.STRONG_CHARGE_BLOCK)

@@ -7,15 +7,19 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
 import rearth.oritech.client.ui.BasicMachineScreen;
 import rearth.oritech.client.ui.BasicMachineScreenHandler;
+import rearth.oritech.client.ui.UpgradableMachineScreen;
+import rearth.oritech.client.ui.UpgradableMachineScreenHandler;
 import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
 
 public class ScreenContent implements ArchitecturyRegistryContainer<ScreenHandlerType<?>> {
     
     public static final ScreenHandlerType<BasicMachineScreenHandler> ALLAY_CREATOR_SCREEN = MenuRegistry.ofExtended(BasicMachineScreenHandler::new);
+    public static final ScreenHandlerType<UpgradableMachineScreenHandler> DIGGER_SCREEN = MenuRegistry.ofExtended(UpgradableMachineScreenHandler::new);
     
     public static void registerScreens() {
         
         MenuRegistry.registerScreenFactory(ALLAY_CREATOR_SCREEN, BasicMachineScreen<BasicMachineScreenHandler>::new);
+        MenuRegistry.registerScreenFactory(DIGGER_SCREEN, UpgradableMachineScreen<UpgradableMachineScreenHandler>::new);
     
     }
     

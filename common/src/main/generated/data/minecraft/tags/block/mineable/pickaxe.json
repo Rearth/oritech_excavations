@@ -2,6 +2,7 @@
   "values": [
     "oritech_excavations:allay_creator_block",
     "oritech_excavations:shatterer_block",
+    "oritech_excavations:digger",
     "oritech_excavations:weak_charge_block",
     "oritech_excavations:medium_charge_block",
     "oritech_excavations:strong_charge_block",

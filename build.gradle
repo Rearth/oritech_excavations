@@ -65,11 +65,11 @@ subprojects {
 
         // todo fix this
         flatDir{
-            dirs 'E:/Workspace/MC/oritech/architectury/neoforge/build/libs'
+            dirs 'E:/Workspace/MC/oritech/mojmaps/Oritech/neoforge/build/libs'
         }
 
         flatDir{
-            dirs 'E:/Workspace/MC/oritech/architectury/fabric/build/libs'
+            dirs 'E:/Workspace/MC/oritech/mojmaps/Oritech/fabric/build/libs'
         }
     }
 
