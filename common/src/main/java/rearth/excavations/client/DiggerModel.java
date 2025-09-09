@@ -36,10 +36,18 @@ public class DiggerModel extends MachineModel<DiggerBlockEntity> {
         var targetOffset = currentPos.subtract(Vec3d.of(animatable.getPos())).multiply(-1);
         var horizontalOffset = new Vec3d(targetOffset.x, 0, targetOffset.z);
         
+        var facingOffset = 0;
+        var facing = animatable.getFacingForMultiblock();
+        switch (facing) {
+            case EAST -> facingOffset = 90;
+            case SOUTH -> facingOffset = 180;
+            case WEST -> facingOffset = -90;
+        }
+        
         var angles = getAzimuthElevation(targetOffset);
         
         var azimuthBone = getAnimationProcessor().getBone("rotato");
-        azimuthBone.setRotY(angles.x);
+        azimuthBone.setRotY((float) (angles.x + Math.toRadians(facingOffset)));
         
         // default head length is 8.5
         var headOffsetZ = horizontalOffset.length() - 9.5f;

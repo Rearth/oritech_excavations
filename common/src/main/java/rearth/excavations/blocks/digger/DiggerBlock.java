@@ -20,7 +20,7 @@ public class DiggerBlock extends MultiblockMachine {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return Objects.requireNonNull(super.getPlacementState(ctx)).with(Properties.HORIZONTAL_FACING, Direction.NORTH);
+        return Objects.requireNonNull(super.getPlacementState(ctx)).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing());
     }
     
     @Override

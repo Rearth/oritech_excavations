@@ -16,6 +16,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -52,7 +53,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     
     private static final int DEFAULT_ENERGY_USAGE = 256;
     
-    @SyncField({SyncType.INITIAL, SyncType.TICK})
+    @SyncField({SyncType.INITIAL, SyncType.TICK, SyncType.GUI_OPEN})
     public final DynamicEnergyStorage energyStorage = new DynamicEnergyStorage(getDefaultCapacity(), getDefaultInsertRate(), 0, this::markDirty);
     @SyncField({SyncType.INITIAL, SyncType.TICK})
     public final InOutInventoryStorage inventory = new InOutInventoryStorage(5, this::markDirty, new InventorySlotAssignment(0, 1, 1, 4));
@@ -80,6 +81,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     private Queue<BlockPos> nextTargets = new ArrayDeque<>();
     private long movingUntil = 0;
     private boolean immediateSearch = false;
+    private float breakProgress = 0f;
     PlayerEntity diggerPlayerEntity;
     
     // anim
@@ -106,9 +108,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
         // head is being moved to new pos
         if (world.getTime() < movingUntil) return;
         
-        if (!nextTargets.isEmpty()) {
-            
-            markDirty();
+        if (!nextTargets.isEmpty() && tryUseEnergy()) {
             
             var nextTarget = nextTargets.peek();
             
@@ -122,17 +122,38 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
                 return;
             }
             
-            nextTargets.remove();
             var nextState = world.getBlockState(nextTarget);
-            if (isStateMineable(nextState, nextTarget)) {
-                breakBlock(nextTarget, nextState);
-            }
             
-            immediateSearch = true;
-            
+            var nextHardness = state.getHardness(world, nextTarget);
+            breakProgress += calculateBreakingPower();
             lastWorkTime = world.getTime();
+            if (breakProgress > nextHardness) {
+                breakProgress = 0;
+                if (isStateMineable(nextState, nextTarget)) {
+                    breakBlock(nextTarget, nextState);
+                }
+                
+                immediateSearch = true;
+                nextTargets.remove();
+            }
         }
         
+    }
+    
+    // todo shovel item consumption
+    private float calculateBreakingPower() {
+        var base = 0.1f;
+        var speed = addonData.speed();
+        var itemBonus = 1f;
+        return base / speed * itemBonus;
+    }
+    
+    private boolean tryUseEnergy() {
+        var cost = (int) (DEFAULT_ENERGY_USAGE / addonData.speed() * addonData.efficiency());
+        if (energyStorage.getAmount() < cost) return false;
+        energyStorage.setAmount(energyStorage.getAmount() - cost);
+        energyStorage.update();
+        return true;
     }
     
     private void breakBlock(BlockPos candidate, BlockState candidateState) {
@@ -148,9 +169,9 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
             }
         }
         
-         candidateState.getBlock().onBreak(world, candidate, candidateState, getDiggerPlayerEntity());
-         world.playSound(null, candidate, candidateState.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 1f, 1f);
-         world.breakBlock(candidate, false);
+        candidateState.getBlock().onBreak(world, candidate, candidateState, getDiggerPlayerEntity());
+        world.playSound(null, candidate, candidateState.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 1f, 1f);
+        world.breakBlock(candidate, false);
     }
     
     public static int InsertToInvSlotAny(ItemApi.InventoryStorage inventory, ItemStack addedStack, int slot, boolean simulate) {
@@ -187,8 +208,8 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
         for (var candidate : BlockPos.iterateOutwards(pos.up(4), maxRadius, maxRadius / 2, maxRadius)) {
             var distSq = candidate.getSquaredDistance(pos);
             
-            // too close to machine (5 blocks dist)
-            if (distSq < 5 * 5) continue;
+            // too close to machine (8 blocks dist)
+            if (distSq < 8 * 8) continue;
             
             var candidateState = world.getBlockState(candidate);
             
@@ -299,7 +320,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     
     @Override
     public Direction getFacingForMultiblock() {
-        return Direction.NORTH;
+        return getCachedState().get(Properties.HORIZONTAL_FACING);
     }
     
     @Override
@@ -344,7 +365,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     
     @Override
     public Direction getFacingForAddon() {
-        return Direction.NORTH;
+        return getCachedState().get(Properties.HORIZONTAL_FACING);
     }
     
     @Override
