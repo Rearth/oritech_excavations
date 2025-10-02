@@ -24,8 +24,7 @@ public class DiggerModel extends MachineModel<DiggerBlockEntity> {
     public void setCustomAnimations(DiggerBlockEntity animatable, long instanceId, AnimationState<DiggerBlockEntity> animationState) {
         
         if (animatable.currentTarget == null || animatable.currentTarget.equals(BlockPos.ORIGIN)
-              || animatable.currentTarget.equals(animatable.getPos().up())
-              || animatable.currentTarget.equals(animatable.getPos())
+              || animatable.currentTarget.getSquaredDistance(animatable.getPos()) < 20
         ) return;
         
         var targetPos = Vec3d.of(animatable.currentTarget.up());

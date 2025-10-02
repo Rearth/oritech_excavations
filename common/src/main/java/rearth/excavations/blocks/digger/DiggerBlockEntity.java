@@ -18,6 +18,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import rearth.excavations.client.init.ScreenContent;
 import rearth.excavations.init.BlockEntitiesContent;
+import rearth.excavations.item.DiggerShovelItem;
 import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.api.energy.containers.DynamicEnergyStorage;
 import rearth.oritech.api.item.ItemApi;
@@ -55,6 +57,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     
     @SyncField({SyncType.INITIAL, SyncType.TICK, SyncType.GUI_OPEN})
     public final DynamicEnergyStorage energyStorage = new DynamicEnergyStorage(getDefaultCapacity(), getDefaultInsertRate(), 0, this::markDirty);
+    
     @SyncField({SyncType.INITIAL, SyncType.TICK})
     public final InOutInventoryStorage inventory = new InOutInventoryStorage(5, this::markDirty, new InventorySlotAssignment(0, 1, 1, 4));
     
@@ -78,6 +81,16 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     @SyncField(SyncType.TICK)
     public long lastWorkTime = 0;
     
+    @SyncField(SyncType.TICK)
+    public int remainingShoveSteps = 0;
+    @SyncField(SyncType.TICK)
+    public int consumedShovelSteps = 0;
+    
+    @SyncField
+    public String lastStatus = "no_energy";
+    
+    public float consumedShovelSpeed = 1f;
+    
     private Queue<BlockPos> nextTargets = new ArrayDeque<>();
     private long movingUntil = 0;
     private boolean immediateSearch = false;
@@ -97,13 +110,31 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
         
         if (!isAssembled(state)) return;
         
-        if (energyStorage.getAmount() <= 0) return;
+        if (energyStorage.getAmount() <= 0)  {
+            if (!lastStatus.equals("no_energy"))
+                this.markDirty();
+                
+            lastStatus = "no_energy";
+            return;
+        }
+        
+        tryConsumeShovel();
+        
+        if (remainingShoveSteps <= 0) {
+            if (!lastStatus.equals("no_shovel"))
+                this.markDirty();
+            
+            lastStatus = "no_shovel";
+            return;
+        }
         
         // find new blocks to mine
         if (nextTargets.isEmpty() && (world.getTime() % 25 == 0 || immediateSearch)) {
             nextTargets = findNextTargets();
             immediateSearch = false;
         }
+        
+        lastStatus = "moving";
         
         // head is being moved to new pos
         if (world.getTime() < movingUntil) return;
@@ -117,10 +148,11 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
             if (headMoveDist > 7) {
                 var moveTime = Math.min(headMoveDist * 3, 24);
                 movingUntil = world.getTime() + moveTime;
-                triggerAnim("machine", "work");
                 
                 return;
             }
+            
+            lastStatus = "work";
             
             var nextState = world.getBlockState(nextTarget);
             
@@ -133,6 +165,8 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
                     breakBlock(nextTarget, nextState);
                 }
                 
+                remainingShoveSteps -= (int) nextHardness;
+                
                 immediateSearch = true;
                 nextTargets.remove();
             }
@@ -140,17 +174,36 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
         
     }
     
-    // todo shovel item consumption
+    private void tryConsumeShovel() {
+        if (remainingShoveSteps > 0) return;
+        
+        var inputItem = this.inventory.getStack(0);
+        if (inputItem.isEmpty()) return;
+        if (!(inputItem.getItem() instanceof DiggerShovelItem diggerShovelItem)) return;
+        
+        consumedShovelSpeed = diggerShovelItem.speed;
+        consumedShovelSteps = diggerShovelItem.hardness;
+        remainingShoveSteps = diggerShovelItem.hardness;
+        
+        inputItem.decrement(1);
+        
+        this.markDirty();
+        
+    }
+    
     private float calculateBreakingPower() {
-        var base = 0.1f;
+        var base = 1f;
         var speed = addonData.speed();
-        var itemBonus = 1f;
+        var itemBonus = consumedShovelSpeed;
         return base / speed * itemBonus;
     }
     
     private boolean tryUseEnergy() {
         var cost = (int) (DEFAULT_ENERGY_USAGE / addonData.speed() * addonData.efficiency());
-        if (energyStorage.getAmount() < cost) return false;
+        if (energyStorage.getAmount() < cost) {
+            lastStatus = "no_energy";
+            return false;
+        }
         energyStorage.setAmount(energyStorage.getAmount() - cost);
         energyStorage.update();
         return true;
@@ -442,7 +495,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
             } else {
                 return state.setAndContinue(PACKAGED);
             }
-        }).triggerableAnim("setup", SETUP).triggerableAnim("work", WORKING));
+        }).triggerableAnim("setup", SETUP));
     }
     
     public boolean isAssembled(BlockState state) {
@@ -472,7 +525,15 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     
     @Override
     public float getProgress() {
-        return 0;
+        if (consumedShovelSteps <= 0)
+            return 0;
+        
+        return (float) remainingShoveSteps / consumedShovelSteps;
+    }
+    
+    @Override
+    public List<Pair<Text, Text>> getExtraExtensionLabels() {
+        return List.of(new Pair<>(Text.translatable("label.oritech_excavations.digger." + lastStatus), Text.translatable("tooltip.oritech_excavations.digger." + lastStatus)));
     }
     
     @Override

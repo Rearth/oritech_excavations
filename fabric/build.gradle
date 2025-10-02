@@ -50,7 +50,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     // oritech + deps
-    modImplementation name: "oritech-fabric-0.17.4"
+    modImplementation "rearth.oritech:oritech-fabric-1.21.1:0.18.1"
     modImplementation "io.wispforest:owo-lib:${owo_version}"
     modImplementation "software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.7"
     modRuntimeOnly "earth.terrarium.athena:athena-fabric-1.21:4.0.0"

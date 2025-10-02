@@ -45,7 +45,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
     // oritech + deps
-    modImplementation name: "oritech-neoforge-0.17.4-dev-shadow"   // currently pointing to local copy. This will be fixed in the future.
+    modImplementation "rearth.oritech:oritech-neoforge-1.21.1:0.18.1"
     include modApi("dev.technici4n:GrandPower:3.0.2")
     modImplementation "io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21"
     forgeRuntimeLibrary(include(api("io.wispforest:endec:0.1.8")))

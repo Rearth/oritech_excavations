@@ -62,15 +62,6 @@ subprojects {
             name = 'teamresourceful'
             url "https://maven.teamresourceful.com/repository/maven-public/"
         }
-
-        // todo fix this
-        flatDir{
-            dirs 'E:/Workspace/MC/oritech/mojmaps/Oritech/neoforge/build/libs'
-        }
-
-        flatDir{
-            dirs 'E:/Workspace/MC/oritech/mojmaps/Oritech/fabric/build/libs'
-        }
     }
 
     dependencies {
