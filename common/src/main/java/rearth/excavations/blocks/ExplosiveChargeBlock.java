@@ -5,10 +5,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.state.StateManager;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,6 +23,7 @@ import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 import rearth.excavations.blocks.shatterer.ShattererBlockEntity;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ExplosiveChargeBlock extends FacingBlock {
@@ -33,6 +38,12 @@ public class ExplosiveChargeBlock extends FacingBlock {
         this.rfNeeded = rfNeeded;
         this.shatterPower = shatterPower;
         setDefaultState(getDefaultState().with(FACING, Direction.UP));
+    }
+    
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
+        tooltip.add(Text.translatable("tooltip.oritech_excavations.seismic_charge").formatted(Formatting.ITALIC, Formatting.GRAY));
+        super.appendTooltip(stack, context, tooltip, options);
     }
     
     @Override

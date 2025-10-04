@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "tag": "c:ingots/nickel"
+    },
+    "c": {
+      "item": "oritech:assembler_block"
+    },
+    "m": {
+      "item": "oritech:dubios_container"
+    },
+    "s": {
+      "item": "oritech:energy_pipe"
+    },
+    "t": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "pattern": [
+    "ttt",
+    "mcm",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:allay_creator_block"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:iron_ingot"
+    },
+    "p": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    " pp",
+    "pcp",
+    "pcp"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:gold_dig_shovel"
+  }
+}

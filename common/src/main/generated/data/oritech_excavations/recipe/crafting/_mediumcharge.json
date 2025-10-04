@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "minecraft:gunpowder"
+    },
+    "o": {
+      "item": "oritech:energite_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "brb",
+    "obo",
+    "bob"
+  ],
+  "result": {
+    "count": 4,
+    "id": "oritech_excavations:medium_charge_block"
+  }
+}

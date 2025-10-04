@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "oritech:plastic_sheet"
+    },
+    "c": {
+      "item": "oritech:plastic_sheet"
+    },
+    "m": {
+      "item": "oritech_excavations:primitive_dig_shovel"
+    },
+    "s": {
+      "item": "oritech_excavations:primitive_dig_shovel"
+    },
+    "t": {
+      "tag": "c:ingots/electrum"
+    }
+  },
+  "pattern": [
+    "ttt",
+    "mcm",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:digger"
+  }
+}

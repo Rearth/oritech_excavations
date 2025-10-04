@@ -89,6 +89,8 @@ public class LaserRemote extends Item {
         
         var storedPositions = stack.getOrDefault(ComponentContent.TARGET_POSITIONS.get(), new ArrayList<BlockPos>());
         
+        tooltip.add(Text.translatable("tooltip.oritech_excavations.designator"));
+        
         if (storedPositions.isEmpty()) {
             tooltip.add(Text.translatable("tooltip.oritech_excavations.designator_empty"));
         } else {

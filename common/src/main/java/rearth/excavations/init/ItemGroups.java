@@ -22,7 +22,7 @@ public class ItemGroups implements ArchitecturyRegistryContainer<ItemGroup> {
     
     public static final ItemGroup MAIN = CreativeTabRegistry.create(
       Text.translatable("itemgroup.oritech_excavations.main"),
-      () -> new ItemStack(BlockContent.STRONG_CHARGE_BLOCK));
+      () -> new ItemStack(BlockContent.EXTREME_CHARGE_BLOCK));
     
     @Override
     public RegistryKey<Registry<ItemGroup>> getRegistryType() {

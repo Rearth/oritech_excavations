@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "oritech:steel_ingot"
+    },
+    "c": {
+      "item": "oritech:plastic_sheet"
+    },
+    "m": {
+      "item": "oritech_excavations:primitive_dig_shovel"
+    },
+    "s": {
+      "tag": "minecraft:planks"
+    },
+    "t": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": [
+    "ttt",
+    "mcm",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:primitive_deep_drill"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "oritech:advanced_computing_engine"
+    },
+    "o": {
+      "item": "oritech:electrum_ingot"
+    },
+    "r": {
+      "item": "oritech:target_designator"
+    }
+  },
+  "pattern": [
+    "brb",
+    "obo",
+    "bob"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:laser_redirector"
+  }
+}

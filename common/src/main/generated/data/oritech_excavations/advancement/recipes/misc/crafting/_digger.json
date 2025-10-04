@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_digger": {
+      "conditions": {
+        "items": [
+          {
+            "items": "oritech_excavations:digger"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "oritech_excavations:crafting/_digger"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_digger"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "oritech_excavations:crafting/_digger"
+    ]
+  }
+}

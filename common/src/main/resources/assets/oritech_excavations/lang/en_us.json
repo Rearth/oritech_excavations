@@ -12,13 +12,13 @@
   "block.oritech_excavations.allay_creator_block": "Intelligence Producer",
   "block.oritech_excavations.digger": "Bucket-Wheel Excavator",
   "block.oritech_excavations.primitive_deep_drill": "Primitive Bedrock Extractor",
-  "item.oritech_excavations.better_allay_egg": "Production Allay Spawn Egg",
+  "item.oritech_excavations.better_allay_egg": "Productive Allay Spawn Egg",
   "item.oritech_excavations.laser_redirector": "Laser Remote Designator",
   "item.oritech_excavations.primitive_dig_shovel": "Primitive Shovel Plating",
   "item.oritech_excavations.advanced_dig_shovel": "Advanced Shovel Plating",
   "item.oritech_excavations.elite_dig_shovel": "Elite Shovel Plating",
   "item.oritech_excavations.gold_dig_shovel": "Gold Shovel Plating",
-  "entity.oritech_excavations.better_allay": "Production Allay",
+  "entity.oritech_excavations.better_allay": "Productive Allay",
   "block.oritech_excavations.shatterer_block": "Shatterer",
   "block.oritech_excavations.hard_stone": "Hard Stone",
   "block.oritech_excavations.harder_stone": "Harder Stone",
@@ -61,5 +61,7 @@
   "tooltip.oritech_excavations.digger.no_energy": "Add energy to continue operation.",
   "tooltip.oritech_excavations.digger.no_shovel": "Insert a shovel plating to dig.",
   "tooltip.oritech_excavations.digger.moving": "Currently relocating to the selected target.",
-  "tooltip.oritech_excavations.digger.work": "Currently excavating the target area."
+  "tooltip.oritech_excavations.digger.work": "Currently excavating the target area.",
+  "tooltip.oritech_excavations.seismic_charge": "Explodes and weakens the ground nearby.",
+  "tooltip.oritech_excavations.designator": "Can be used to control multiple enderic lasers."
 }

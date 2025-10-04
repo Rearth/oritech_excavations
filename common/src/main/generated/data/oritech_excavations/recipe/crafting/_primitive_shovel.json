@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:iron_ingot"
+    },
+    "p": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    " pp",
+    "pcp",
+    "pcp"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:primitive_dig_shovel"
+  }
+}

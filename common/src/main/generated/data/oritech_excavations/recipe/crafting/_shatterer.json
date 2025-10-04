@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "oritech_excavations:weak_charge_block"
+    },
+    "c": {
+      "item": "oritech:overcharged_crystal"
+    },
+    "m": {
+      "item": "oritech:metal_girder_block"
+    },
+    "s": {
+      "item": "oritech:metal_girder_block"
+    },
+    "t": {
+      "item": "oritech:plastic_sheet"
+    }
+  },
+  "pattern": [
+    "ttt",
+    "mcm",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritech_excavations:shatterer_block"
+  }
+}
