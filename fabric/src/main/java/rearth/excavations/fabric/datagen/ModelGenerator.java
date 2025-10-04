@@ -20,6 +20,7 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.ALLAY_CREATOR_BLOCK, Blocks.LIGHTNING_ROD);
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.SHATTERER_BLOCK, Blocks.LIGHTNING_ROD);
         blockStateModelGenerator.registerStateWithModelReference(BlockContent.DIGGER, Blocks.LIGHTNING_ROD);
+        blockStateModelGenerator.registerStateWithModelReference(BlockContent.PRIMITIVE_DEEP_DRILL, Blocks.LIGHTNING_ROD);
         
         blockStateModelGenerator.registerRod(BlockContent.WEAK_CHARGE_BLOCK);
         blockStateModelGenerator.registerRod(BlockContent.MEDIUM_CHARGE_BLOCK);

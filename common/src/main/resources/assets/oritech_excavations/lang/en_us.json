@@ -11,6 +11,7 @@
   "block.oritech_excavations.extreme_charge_block": "Extreme Seismic Charge",
   "block.oritech_excavations.allay_creator_block": "Intelligence Producer",
   "block.oritech_excavations.digger": "Bucket-Wheel Excavator",
+  "block.oritech_excavations.primitive_deep_drill": "Primitive Bedrock Extractor",
   "item.oritech_excavations.better_allay_egg": "Production Allay Spawn Egg",
   "item.oritech_excavations.laser_redirector": "Laser Remote Designator",
   "item.oritech_excavations.primitive_dig_shovel": "Primitive Shovel Plating",

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import rearth.excavations.blocks.ExplosiveChargeBlock;
 import rearth.excavations.blocks.allay_creator.AllayCreatorBlock;
 import rearth.excavations.blocks.digger.DiggerBlock;
+import rearth.excavations.blocks.quarry.PrimitiveDeepDrillBlock;
 import rearth.excavations.blocks.shatterer.ShattererBlock;
 import rearth.oritech.item.OritechGeoItem;
 import rearth.oritech.util.registry.ArchitecturyBlockRegistryContainer;
@@ -42,6 +43,9 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.3f)
     @Rarity(net.minecraft.util.Rarity.UNCOMMON)
     public static final Block DIGGER = new DiggerBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
+    
+    @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.7f)
+    public static final Block PRIMITIVE_DEEP_DRILL = new PrimitiveDeepDrillBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
     public static final Block WEAK_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 2, 250_000, 4);
     public static final Block MEDIUM_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 4, 500_000, 8);

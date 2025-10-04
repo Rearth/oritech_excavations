@@ -69,6 +69,7 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
           .add(BlockContent.ALLAY_CREATOR_BLOCK)
           .add(BlockContent.SHATTERER_BLOCK)
           .add(BlockContent.DIGGER)
+          .add(BlockContent.PRIMITIVE_DEEP_DRILL)
           .add(BlockContent.WEAK_CHARGE_BLOCK)
           .add(BlockContent.MEDIUM_CHARGE_BLOCK)
           .add(BlockContent.STRONG_CHARGE_BLOCK)

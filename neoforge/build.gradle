@@ -45,7 +45,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
     // oritech + deps
-    modImplementation "rearth.oritech:oritech-neoforge-1.21.1:0.18.1"
+    modImplementation "rearth.oritech:oritech-neoforge-1.21.1:${oritech_version}"
     include modApi("dev.technici4n:GrandPower:3.0.2")
     modImplementation "io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21"
     forgeRuntimeLibrary(include(api("io.wispforest:endec:0.1.8")))
