@@ -1,0 +1,12 @@
+{
+  "intro_line": {
+    "sounds": [
+      "oritech_excavations:intro_line"
+    ]
+  },
+  "stone_breaking": {
+    "sounds": [
+      "oritech_excavations:stone_breaking"
+    ]
+  }
+}

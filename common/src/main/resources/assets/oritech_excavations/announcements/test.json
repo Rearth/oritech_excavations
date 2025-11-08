@@ -1,0 +1,46 @@
+{
+  "title": "The ground",
+  "sound": "oritech_excavations:stone_breaking",
+  "subtitles": [
+    {
+      "text": "Scanning environment...",
+      "endAt": 1700
+    },
+    {
+      "text": "There appears to be a lot more ores",
+      "endAt": 3500
+    },
+    {
+      "text": "than on your homeworld.",
+      "endAt": 5100
+    },
+    {
+      "text": "However, the ground also gets much harder",
+      "endAt": 7900
+    },
+    {
+      "text": "to break the further down you go",
+      "endAt": 9400
+    },
+    {
+      "text": "Wait...",
+      "endAt": 11000
+    },
+    {
+      "text": "I'm also detecting something large further below",
+      "endAt": 14000
+    },
+    {
+      "text": "that I can't identify from this distance.",
+      "endAt": 16500
+    },
+    {
+      "text": "Hopefully I can get more details ",
+      "endAt": 18300
+    },
+    {
+      "text": "once we venture further down.",
+      "endAt": 21000
+    }
+  ]
+}

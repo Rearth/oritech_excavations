@@ -59,6 +59,7 @@ public final class Excavation {
         res.put(RegistryKeys.RECIPE_TYPE.getValue(), () -> ArchitecturyRegistryContainer.register(RecipeContent.class, MOD_ID, false));
         res.put(RegistryKeys.SCREEN_HANDLER.getValue(), () -> ArchitecturyRegistryContainer.register(ScreenContent.class, MOD_ID, false));
         res.put(RegistryKeys.ITEM_GROUP.getValue(), () -> ArchitecturyRegistryContainer.register(ItemGroups.class, MOD_ID, false));
+        res.put(RegistryKeys.SOUND_EVENT.getValue(), () -> ArchitecturyRegistryContainer.register(SoundContent.class, MOD_ID, false));
         res.put(RegistryKeys.RECIPE_SERIALIZER.getValue(), ExcavationRecipeRegistryContainer::finishSerializerRegister);
         res.put(RegistryKeys.DATA_COMPONENT_TYPE.getValue(), ComponentContent.COMPONENTS::register);
         

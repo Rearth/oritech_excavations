@@ -1,0 +1,22 @@
+{
+  "title": "The Heist",
+  "sound": "oritech_excavations:intro_line",
+  "subtitles": [
+    {
+      "text": "You have discovered an",
+      "endAt": 1000
+    },
+    {
+      "text": "underground cave system.",
+      "endAt": 2000
+    },
+    {
+      "text": "It appear to be a whole new",
+      "endAt": 3100
+    },
+    {
+      "text": "world down there.",
+      "endAt": 5000
+    }
+  ]
+}

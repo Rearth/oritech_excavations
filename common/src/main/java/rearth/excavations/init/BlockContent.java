@@ -54,10 +54,14 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @Rarity(net.minecraft.util.Rarity.EPIC)
     public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 16, 4_000_000, 50);
     
+    // vanilla
     // stone is .strength(1.5F, 6.0F)
     // deepslate is .strength(3F, 6.0F)
     // obsidian is .strength(50F, 1200F)
     // cracked is quarter strength, shattered is sqrt(x) / 2
+    
+    // todo add hard crystal block (2 levels)
+    // todo add nickel crystal block
     
     @rearth.oritech.init.BlockContent.NoAutoDrop
     public static final Block HARD_STONE = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(2.5F, 9F).mapColor(MapColor.STONE_GRAY));
@@ -65,7 +69,7 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     public static final Block HARDER_STONE = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(4F, 12F).mapColor(MapColor.STONE_GRAY));
     @rearth.oritech.init.BlockContent.NoAutoDrop
     public static final Block HARDERER_STONE = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(7F, 15F).mapColor(MapColor.DEEPSLATE_GRAY));
-    // deepslate would be here
+    // deepslate would be here (target 9)
     @rearth.oritech.init.BlockContent.NoAutoDrop
     public static final Block DEEPER_SLATE = new Block(AbstractBlock.Settings.copy(Blocks.DEEPSLATE).strength(15F, 50F).mapColor(MapColor.DEEPSLATE_GRAY));
     @rearth.oritech.init.BlockContent.NoAutoDrop
@@ -122,15 +126,10 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
         
         if (field.isAnnotationPresent(BlockRegistryContainer.NoBlockItem.class)) return;
         
-        net.minecraft.util.Rarity rarity = null;
-        
-        if (field.isAnnotationPresent(Rarity.class))
-            rarity = field.getAnnotation(Rarity.class).value();
-        
         if (field.isAnnotationPresent(rearth.oritech.init.BlockContent.UseGeoBlockItem.class)) {
-            Registry.register(Registries.ITEM, Identifier.of(namespace, identifier), getGeoBlockItem(value, identifier, field.getAnnotation(rearth.oritech.init.BlockContent.UseGeoBlockItem.class).scale(), rarity));
+            Registry.register(Registries.ITEM, Identifier.of(namespace, identifier), getGeoBlockItem(value, identifier, field.getAnnotation(rearth.oritech.init.BlockContent.UseGeoBlockItem.class).scale()));
         } else {
-            Registry.register(Registries.ITEM, Identifier.of(namespace, identifier), createBlockItem(value, identifier, rarity));
+            Registry.register(Registries.ITEM, Identifier.of(namespace, identifier), createBlockItem(value, identifier));
         }
         
         if (!field.isAnnotationPresent(rearth.oritech.init.BlockContent.NoAutoDrop.class)) {
@@ -140,19 +139,15 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
         ItemGroups.registered.add(value::asItem);
     }
     
-    private BlockItem getGeoBlockItem(Block block, String identifier, float scale, @Nullable net.minecraft.util.Rarity rarity) {
+    private BlockItem getGeoBlockItem(Block block, String identifier, float scale) {
         
         var settings = new Item.Settings();
-        if (rarity != null)
-            settings.rarity(rarity);
         
         return new OritechGeoItem(block, settings, scale, identifier);
     }
     
-    public BlockItem createBlockItem(Block block, String identifier, @Nullable net.minecraft.util.Rarity rarity) {
+    public BlockItem createBlockItem(Block block, String identifier) {
         var settings = new Item.Settings();
-        if (rarity != null)
-            settings.rarity(rarity);
         return new BlockItem(block, settings);
     }
     
