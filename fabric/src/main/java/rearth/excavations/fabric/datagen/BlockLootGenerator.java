@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import rearth.excavations.init.BlockContent;
+import rearth.oritech.init.ItemContent;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,6 +21,10 @@ public class BlockLootGenerator extends FabricBlockLootTableProvider {
             addDrop(block);
         }
         
+        addDrop(BlockContent.NICKEL_CRYSTAL_BLOCK, oreDrops(BlockContent.NICKEL_CRYSTAL_BLOCK, ItemContent.RAW_NICKEL));
+        
+        addDrop(BlockContent.HARDENED_CRYSTAL_BLOCK, Items.AMETHYST_SHARD);
+        addDrop(BlockContent.REINFORCED_CRYSTAL_BLOCK, Items.AMETHYST_SHARD);
         addDrop(BlockContent.CRACKED_STONE, Items.COBBLESTONE);
         addDrop(BlockContent.SHATTERED_STONE, Items.COBBLESTONE);
         addDrop(BlockContent.HARD_STONE, Items.COBBLESTONE);

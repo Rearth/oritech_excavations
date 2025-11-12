@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "oritech_excavations:block/nickel_crystal_block"
+  }
+}

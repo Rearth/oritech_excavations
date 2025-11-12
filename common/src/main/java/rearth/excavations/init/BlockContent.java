@@ -2,16 +2,12 @@ package rearth.excavations.init;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 import rearth.excavations.blocks.ExplosiveChargeBlock;
 import rearth.excavations.blocks.allay_creator.AllayCreatorBlock;
 import rearth.excavations.blocks.digger.DiggerBlock;
@@ -54,14 +50,19 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @Rarity(net.minecraft.util.Rarity.EPIC)
     public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 16, 4_000_000, 50);
     
+    @rearth.oritech.init.BlockContent.NoAutoDrop
+    public static final Block NICKEL_CRYSTAL_BLOCK = new AmethystClusterBlock(7, 3, AbstractBlock.Settings.copy(Blocks.AMETHYST_CLUSTER));
+    
     // vanilla
     // stone is .strength(1.5F, 6.0F)
     // deepslate is .strength(3F, 6.0F)
     // obsidian is .strength(50F, 1200F)
     // cracked is quarter strength, shattered is sqrt(x) / 2
     
-    // todo add hard crystal block (2 levels)
-    // todo add nickel crystal block
+    @rearth.oritech.init.BlockContent.NoAutoDrop
+    public static final Block HARDENED_CRYSTAL_BLOCK = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(100F, 15F).mapColor(MapColor.STONE_GRAY));
+    @rearth.oritech.init.BlockContent.NoAutoDrop
+    public static final Block REINFORCED_CRYSTAL_BLOCK = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(250F, 30F).mapColor(MapColor.STONE_GRAY));
     
     @rearth.oritech.init.BlockContent.NoAutoDrop
     public static final Block HARD_STONE = new Block(AbstractBlock.Settings.copy(Blocks.STONE).strength(2.5F, 9F).mapColor(MapColor.STONE_GRAY));

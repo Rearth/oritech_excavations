@@ -25,7 +25,7 @@ dependencies {
 
     modImplementation "rearth.oritech:oritech-common-1.21.1-intermediary:${oritech_version}"
 
-    // owo lib (or owo-lib-neoforge)
+// owo lib (or owo-lib-neoforge)
     modImplementation "io.wispforest:owo-lib:${owo_version}"
     annotationProcessor modImplementation("io.wispforest:owo-lib:${owo_version}")
 

@@ -1,0 +1,11 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "oritech_excavations:block/nickel_crystal_block"
+	},
+	"display": {
+		"head": {
+			"translation": [ 0, 14, -5 ]
+		}
+	}
+}

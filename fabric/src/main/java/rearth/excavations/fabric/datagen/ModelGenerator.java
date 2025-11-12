@@ -27,6 +27,9 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerRod(BlockContent.STRONG_CHARGE_BLOCK);
         blockStateModelGenerator.registerRod(BlockContent.EXTREME_CHARGE_BLOCK);
         
+        blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDENED_CRYSTAL_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockContent.REINFORCED_CRYSTAL_BLOCK);
+        
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARD_STONE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDER_STONE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDERER_STONE);
@@ -64,6 +67,8 @@ public class ModelGenerator extends FabricModelProvider {
         
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.CRACKED_OBSIDIAN);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.SHATTERED_OBSIDIAN);
+        
+        blockStateModelGenerator.registerAmethyst(BlockContent.NICKEL_CRYSTAL_BLOCK);
     }
     
     @Override

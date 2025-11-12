@@ -49,7 +49,13 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
           .add(BlockContent.CRACKED_OBSIDIAN)
           .add(BlockContent.SHATTERED_OBSIDIAN)
           .add(BlockContent.CRACKED_REINFORCED_OBSIDIAN)
+          .add(BlockContent.HARDENED_CRYSTAL_BLOCK)
+          .add(BlockContent.REINFORCED_CRYSTAL_BLOCK)
           .add(BlockContent.SHATTERED_REINFORCED_OBSIDIAN);
+        
+        getOrCreateTagBuilder(rearth.oritech.init.TagContent.LASER_FAST_BREAKING)
+          .add(BlockContent.HARDENED_CRYSTAL_BLOCK)
+            .add(BlockContent.REINFORCED_CRYSTAL_BLOCK);
         
         getOrCreateTagBuilder(TagContent.ALLAY_MINEABLE)
           .addOptionalTag(ConventionalBlockTags.ORES)
@@ -74,6 +80,7 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
           .add(BlockContent.MEDIUM_CHARGE_BLOCK)
           .add(BlockContent.STRONG_CHARGE_BLOCK)
           .add(BlockContent.EXTREME_CHARGE_BLOCK)
+          .add(BlockContent.NICKEL_CRYSTAL_BLOCK)
           .addOptionalTag(TagContent.HARDER_STONES);
     }
 }

@@ -71,7 +71,7 @@ public class DiggerBlockEntity extends NetworkedBlockEntity
     @SyncField(SyncType.GUI_OPEN)
     private final List<BlockPos> openSlots = new ArrayList<>();
     @SyncField(SyncType.GUI_OPEN)
-    private BaseAddonData addonData = MachineAddonController.DEFAULT_ADDON_DATA;
+    private BaseAddonData addonData = BaseAddonData.DEFAULT_ADDON_DATA;
     
     @SyncField(SyncType.GUI_OPEN)
     public float maxRange;

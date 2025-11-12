@@ -63,7 +63,12 @@ subprojects {
             url "https://maven.teamresourceful.com/repository/maven-public/"
         }
 
-        mavenLocal()
+        maven {
+            name = "BlameJared"
+            url = "https://maven.blamejared.com"
+        }
+
+        // mavenLocal()
     }
 
     dependencies {

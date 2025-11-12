@@ -8,6 +8,7 @@
     "oritech_excavations:medium_charge_block",
     "oritech_excavations:strong_charge_block",
     "oritech_excavations:extreme_charge_block",
+    "oritech_excavations:nickel_crystal_block",
     {
       "id": "#oritech_excavations:harder_stones",
       "required": false

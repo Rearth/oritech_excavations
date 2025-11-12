@@ -26,6 +26,8 @@
     "oritech_excavations:cracked_obsidian",
     "oritech_excavations:shattered_obsidian",
     "oritech_excavations:cracked_reinforced_obsidian",
+    "oritech_excavations:hardened_crystal_block",
+    "oritech_excavations:reinforced_crystal_block",
     "oritech_excavations:shattered_reinforced_obsidian"
   ]
 }
