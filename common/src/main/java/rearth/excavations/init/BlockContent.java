@@ -122,6 +122,9 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @rearth.oritech.init.BlockContent.NoAutoDrop
     public static final Block SHATTERED_REINFORCED_OBSIDIAN = new Block(AbstractBlock.Settings.copy(Blocks.OBSIDIAN).strength((float) (Math.sqrt(100F) / 2f), 10F).mapColor(MapColor.BLACK));
     
+    @BlockRegistryContainer.NoBlockItem
+    public static final Block ANNOUNCER_DUMMY_BLOCK = new Block(AbstractBlock.Settings.copy(Blocks.OBSIDIAN));
+    
     @Override
     public void postProcessField(String namespace, Block value, String identifier, Field field, RegistrySupplier<Block> supplier) {
         

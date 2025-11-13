@@ -30,6 +30,8 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDENED_CRYSTAL_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.REINFORCED_CRYSTAL_BLOCK);
         
+        blockStateModelGenerator.registerSimpleCubeAll(BlockContent.ANNOUNCER_DUMMY_BLOCK);
+        
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARD_STONE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDER_STONE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockContent.HARDERER_STONE);

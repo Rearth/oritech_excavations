@@ -9,6 +9,8 @@ import io.wispforest.owo.ui.hud.Hud;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -66,6 +68,9 @@ public class AdvancementAnnouncer {
         subContainer.child(subtitle);
         lastSubContainer.child(lastSubtitle);
         
+        var announcerIcon = Components.sprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Excavation.id("block/announcer_dummy_block")));
+        mainContainer.child(announcerIcon);
+        
         mainContainer.child(lastSubContainer);
         mainContainer.child(subContainer);
     }
@@ -73,6 +78,7 @@ public class AdvancementAnnouncer {
     public static void init() {
         mainContainer = Containers.verticalFlow(Sizing.content(), Sizing.content());
         mainContainer.horizontalAlignment(HorizontalAlignment.RIGHT);
+        
         
         Hud.add(Excavation.id("hud_progress"), () -> mainContainer
                                                        .positioning(Positioning.relative(100, 35)));
