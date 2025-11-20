@@ -8,6 +8,8 @@ import net.minecraft.registry.RegistryKeys;
 import rearth.excavations.Excavation;
 import rearth.excavations.blocks.allay_creator.AllayCreatorBlockEntity;
 import rearth.excavations.blocks.digger.DiggerBlockEntity;
+import rearth.excavations.blocks.excavation_controller.DigControllerBlock;
+import rearth.excavations.blocks.excavation_controller.DigControllerBlockEntity;
 import rearth.excavations.blocks.quarry.PrimitiveDeepDrillEntity;
 import rearth.excavations.blocks.shatterer.ShattererBlockEntity;
 import rearth.oritech.api.energy.EnergyApi;
@@ -34,6 +36,8 @@ public class BlockEntitiesContent implements ArchitecturyRegistryContainer<Block
     @rearth.oritech.init.BlockEntitiesContent.AssignSidedInventory
     @rearth.oritech.init.BlockEntitiesContent.AssignSidedEnergy
     public static final BlockEntityType<PrimitiveDeepDrillEntity> PRIMITIVE_DEEP_DRILL_ENTITY = BlockEntityType.Builder.create(PrimitiveDeepDrillEntity::new, BlockContent.PRIMITIVE_DEEP_DRILL).build(null);
+    
+    public static final BlockEntityType<DigControllerBlockEntity> DIG_CONTROLLER_ENTITY = BlockEntityType.Builder.create(DigControllerBlockEntity::new, BlockContent.DIG_CONTROLLER).build(null);
     
     
     @Override

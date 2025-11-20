@@ -22,7 +22,7 @@ public class RendererContent {
         BlockEntityRendererFactories.register(BlockEntitiesContent.SHATTERER_BLOCK_ENTITY, ctx -> new ShattererRenderer("models/shatterer_block"));
         BlockEntityRendererFactories.register(BlockEntitiesContent.DIGGER_BLOCK_ENTITY, ctx -> new DiggerRenderer("models/digger"));
         BlockEntityRendererFactories.register(BlockEntitiesContent.PRIMITIVE_DEEP_DRILL_ENTITY, ctx -> new MachineRenderer<>("models/primitive_deep_drill"));
-        
+        BlockEntityRendererFactories.register(BlockEntitiesContent.DIG_CONTROLLER_ENTITY, ctx -> new MachineRenderer<>("models/dig_controller"));
         
         RENDER_LAYERS.put(BlockContent.NICKEL_CRYSTAL_BLOCK, RenderLayer.getCutout());
     }

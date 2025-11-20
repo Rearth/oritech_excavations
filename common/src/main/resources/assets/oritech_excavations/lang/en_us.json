@@ -1,4 +1,5 @@
 {
+  "generator.terra.digger/digger": "Deep Dig",
   "hint.oritech_excavations.no_target": "No target found.",
   "hint.oritech_excavations.no_support": "The machine lacks structural support. Ensure all structural attachments in the corners are connected to solid ground",
   "hint.oritech_excavations.no_ammo": "No explosive charge loaded.",
@@ -11,6 +12,7 @@
   "block.oritech_excavations.extreme_charge_block": "Extreme Seismic Charge",
   "block.oritech_excavations.allay_creator_block": "Intelligence Producer",
   "block.oritech_excavations.digger": "Bucket-Wheel Excavator",
+  "block.oritech_excavations.dig_controller": "Digging Project Supervision Panel",
   "block.oritech_excavations.primitive_deep_drill": "Primitive Bedrock Extractor",
   "block.oritech_excavations.nickel_crystal_block": "Nickel Crystal Block",
   "block.oritech_excavations.hardened_crystal_block": "Hardened Crystal Block",

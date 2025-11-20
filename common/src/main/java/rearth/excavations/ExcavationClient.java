@@ -38,7 +38,10 @@ public class ExcavationClient {
             
             if (DEBUG_TEST.wasPressed()) {
                 Excavation.LOGGER.info("Excavations debug test!");
-                var data = AnnouncementManager.getAnnouncement(Excavation.id("test"));
+                
+                var announcement = Math.random() > 0.5 ? "test" : "test2";
+                
+                var data = AnnouncementManager.getAnnouncement(Excavation.id(announcement));
                 System.out.println(data);
                 
                 AdvancementAnnouncer.announce(data);
