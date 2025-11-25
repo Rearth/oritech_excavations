@@ -27,6 +27,8 @@ public final class Excavation {
         LOGGER.info("Oritech id: " + Oritech.MOD_ID);
         
         MobContent.init();
+        
+        NetworkContent.init();
     }
     
     // fabric only
