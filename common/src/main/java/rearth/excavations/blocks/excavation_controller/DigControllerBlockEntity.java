@@ -20,6 +20,7 @@ import rearth.excavations.Excavation;
 import rearth.excavations.client.ui.DigControllerScreenHandler;
 import rearth.excavations.init.BlockEntitiesContent;
 import rearth.oritech.api.networking.NetworkedBlockEntity;
+import rearth.oritech.api.networking.SyncField;
 import rearth.oritech.api.networking.SyncType;
 import rearth.oritech.block.base.entity.MachineBlockEntity;
 import rearth.oritech.block.blocks.storage.UnstableContainerBlock;
@@ -41,10 +42,12 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
     protected final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
     
     private long age = 0;
+    private Map<Integer, LayerScan> scanResults = new HashMap<>();
     
+    @SyncField
     private BlockPos holeCenter = BlockPos.ORIGIN;
-    private Map<Integer, ScanSegment> scanResults = new HashMap<>();
-    private Map<Integer, ScanArea> groupedAreas = new HashMap<>();
+    @SyncField
+    private Map<Integer, SegmentScan> groupedAreas = new HashMap<>();
     
     public DigControllerBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesContent.DIG_CONTROLLER_ENTITY, pos, state);
@@ -60,9 +63,13 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         
         if (holeCenter.equals(BlockPos.ORIGIN)) return;
         
-        var scanAt = age % 130 - 64;
+        var scanAt = age % 200 - 64;
         scanLayer((int) scanAt);
-        groupResults((int) scanAt);
+        
+        if (scanAt % 16 == 15) {
+            groupResults((int) scanAt);
+            this.markDirty();
+        }
         
     }
     
@@ -77,7 +84,8 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         var closestSolid = getClosestNonAirInLayer(from, maxSearchDist / 2);
         var dist = (int) Math.sqrt(closestSolid.getSquaredDistance(from));
         
-        var result = new ScanSegment(airBlocks.size(), dist);
+        var result = new LayerScan(airBlocks.size(), dist);
+        
         scanResults.put(y, result);
     }
     
@@ -92,9 +100,9 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         
         for (int i = 0; i < 16; i++) {
             var layer = startPoint + i;
-            var data = scanResults.getOrDefault(layer, ScanSegment.NOT_SCANNED);
-            if (data == ScanSegment.NOT_SCANNED) {
-                groupedAreas.put(startPoint, ScanArea.NOT_SCANNED);
+            var data = scanResults.getOrDefault(layer, LayerScan.NOT_SCANNED);
+            if (data == LayerScan.NOT_SCANNED) {
+                groupedAreas.put(startPoint, SegmentScan.NOT_SCANNED);
                 return;
             }
             
@@ -118,12 +126,23 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         
         var targetArea = Math.PI * targetRadius * targetRadius;
         
-        var progress = 0;
-        // todo calculate progress. Range 0-2.
-        // is based on whether any layer is too small for minRadius
-        // also include a mix between min and max area / radius
+        var effectiveRadius = (lowestRadius + largestRadius) / 2;
+        var effectiveSize = (lowestSize + largestSize) / 2;
         
-        var result = new ScanArea(lowestRadius, largestRadius, lowestSize, largestSize, progress);
+        var radiusProgress = effectiveRadius / targetRadius;
+        var sizeProgress = effectiveSize / targetArea;
+        var progress = (radiusProgress + sizeProgress) / 2f;
+        progress = Math.clamp(progress, 0, 2);
+        
+        if (lowestRadius < targetMinRadius) {
+            progress /= 4;
+        }
+        
+        
+        var result = new SegmentScan(lowestRadius, largestRadius, lowestSize, largestSize, effectiveRadius, effectiveSize, progress);
+        
+        System.out.println("segment scan at Y " + startPoint + ": " + result);
+        
         groupedAreas.put(startPoint, result);
         
     }
@@ -344,12 +363,20 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         }
     }
     
-    public record ScanSegment(int foundSize, int foundMinRadius) {
-        public static ScanSegment NOT_SCANNED = new ScanSegment(-1, -1);
+    public BlockPos getHoleCenter() {
+        return holeCenter;
     }
     
-    public record ScanArea(int foundMinRadius, int foundMaxRadius, int foundMinSize, int foundMaxSize, float progress) {
-        public static ScanArea NOT_SCANNED = new ScanArea(-1, -1, -1, -1, 0);
+    public Map<Integer, SegmentScan> getScanResults() {
+        return groupedAreas;
+    }
+    
+    public record LayerScan(int foundSize, int foundMinRadius) {
+        public static LayerScan NOT_SCANNED = new LayerScan(-1, -1);
+    }
+    
+    public record SegmentScan(int foundMinRadius, int foundMaxRadius, int foundMinSize, int foundMaxSize, int effectiveRadius, int effectiveSize, double progress) {
+        public static SegmentScan NOT_SCANNED = new SegmentScan(-1, -1, -1, -1, -1, -1, 0);
     }
     
     
