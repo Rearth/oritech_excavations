@@ -165,7 +165,7 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         
         var result = new SegmentScan(lowestRadius, largestRadius, lowestSize, largestSize, effectiveRadius, effectiveSize, progress);
         
-        System.out.println("segment scan at Y " + startPoint + ": " + result);
+        // System.out.println("segment scan at Y " + startPoint + ": " + result);
         
         groupedAreas.put(startPoint, result);
         scanned.add(startPoint + 2000);
