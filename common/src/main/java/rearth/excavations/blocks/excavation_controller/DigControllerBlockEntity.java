@@ -39,15 +39,26 @@ import static rearth.oritech.block.base.entity.MachineBlockEntity.IDLE;
 
 public class DigControllerBlockEntity extends NetworkedBlockEntity implements GeoBlockEntity, ExtendedMenuProvider {
     
+    public static final int SCAN_START_Y = -512;
+    public static final int SCAN_END_Y = 208;
+    
     protected final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
     
-    private long age = 0;
-    private Map<Integer, LayerScan> scanResults = new HashMap<>();
+    public long age = 0;
     
-    @SyncField
+    private final Map<Integer, LayerScan> scanResults = new HashMap<>();
+    
+    @SyncField({SyncType.GUI_OPEN, SyncType.GUI_TICK})
     private BlockPos holeCenter = BlockPos.ORIGIN;
-    @SyncField
+    @SyncField({SyncType.GUI_OPEN, SyncType.GUI_TICK})
     private Map<Integer, SegmentScan> groupedAreas = new HashMap<>();
+    
+    @SyncField({SyncType.GUI_OPEN, SyncType.GUI_TICK})
+    public int lastScanY = 0;
+    @SyncField({SyncType.GUI_OPEN, SyncType.GUI_TICK})
+    public long lastScanTime = 0;
+    
+    private final HashSet<Integer> scanned = new HashSet<>();
     
     public DigControllerBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesContent.DIG_CONTROLLER_ENTITY, pos, state);
@@ -63,17 +74,27 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         
         if (holeCenter.equals(BlockPos.ORIGIN)) return;
         
-        var scanAt = age % 200 - 64;
+        var bottom = SCAN_START_Y - 1;
+        var top = SCAN_END_Y + 16;
+        var height = top - bottom;
+        
+        var scanAt = bottom + (age % height);
         scanLayer((int) scanAt);
         
-        if (scanAt % 16 == 15) {
-            groupResults((int) scanAt);
+        if (scanAt % 16 == 15 || scanAt % 16 == -1) {
+            if (scanAt < 0) {
+                groupResults((int) scanAt - 16);
+            } else {
+                groupResults((int) scanAt);
+            }
             this.markDirty();
         }
         
     }
     
     private void scanLayer(int y) {
+        
+        if (scanned.contains(y)) return;
         
         var from = new BlockPos(holeCenter.getX(), y, holeCenter.getZ());
         
@@ -87,11 +108,14 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         var result = new LayerScan(airBlocks.size(), dist);
         
         scanResults.put(y, result);
+        scanned.add(y);
     }
     
     private void groupResults(int lastScanned) {
         
         var startPoint = lastScanned - (lastScanned % 16);  // rounds down to nearest multiple of 16
+        
+        if (scanned.contains(startPoint + 2000)) return;
         
         var lowestRadius = 100000;
         var lowestSize = 100000;
@@ -144,13 +168,17 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         System.out.println("segment scan at Y " + startPoint + ": " + result);
         
         groupedAreas.put(startPoint, result);
+        scanned.add(startPoint + 2000);
+        
+        lastScanY = startPoint;
+        lastScanTime = world.getTime();
         
     }
     
     public static int GetDesiredRadiusAtY(int y) {
         
-        var bottom = -500;
-        var top = 200;
+        var bottom = SCAN_START_Y;
+        var top = SCAN_END_Y;
         var minRadius = 10;
         var maxRadius = 35;
         
@@ -342,6 +370,7 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
     @Override
     public void saveExtraData(PacketByteBuf buf) {
         findHole();
+        this.scanned.clear();
         sendUpdate(SyncType.GUI_OPEN);
         buf.writeBlockPos(pos);
     }
@@ -360,6 +389,7 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
         var blockEntity = player.getWorld().getBlockEntity(packet.pos(), BlockEntitiesContent.DIG_CONTROLLER_ENTITY);
         if (blockEntity.isPresent()) {
             blockEntity.get().findHole();
+            blockEntity.get().scanned.clear();
         }
     }
     
