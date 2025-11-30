@@ -39,7 +39,7 @@ import static rearth.oritech.block.base.entity.MachineBlockEntity.IDLE;
 
 public class DigControllerBlockEntity extends NetworkedBlockEntity implements GeoBlockEntity, ExtendedMenuProvider {
     
-    public static final int SCAN_START_Y = -512;
+    public static final int SCAN_START_Y = -320;
     public static final int SCAN_END_Y = 208;
     
     protected final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
