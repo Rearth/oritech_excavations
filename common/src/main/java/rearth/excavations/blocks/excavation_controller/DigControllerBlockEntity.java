@@ -63,6 +63,9 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
     // todo calculate total progress
     // todo calculate only based on allay mineable or something?
     
+    
+    // add uranium like ores for nickel, iron, copper, redstone
+    
     public DigControllerBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesContent.DIG_CONTROLLER_ENTITY, pos, state);
     }

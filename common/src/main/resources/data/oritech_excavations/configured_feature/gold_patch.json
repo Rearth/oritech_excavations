@@ -1,0 +1,8 @@
+{
+  "type": "oritech:uranium_patch",
+  "config": {
+    "number": 5,
+    "blockId": "minecraft:gold_ore",
+    "crystalId": "spectrum:gold_crystal"
+  }
+}

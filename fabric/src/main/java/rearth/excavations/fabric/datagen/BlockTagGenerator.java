@@ -53,9 +53,19 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
           .add(BlockContent.REINFORCED_CRYSTAL_BLOCK)
           .add(BlockContent.SHATTERED_REINFORCED_OBSIDIAN);
         
+        getOrCreateTagBuilder(BlockTags.STONE_ORE_REPLACEABLES)
+          .add(BlockContent.HARD_STONE)
+          .add(BlockContent.HARDER_STONE)
+          .add(BlockContent.HARDERER_STONE);
+        
+        getOrCreateTagBuilder(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+          .add(BlockContent.DEEPER_SLATE)
+          .add(BlockContent.DEEPEST_SLATE)
+          .add(BlockContent.VERY_DEEP_SLATE);
+        
         getOrCreateTagBuilder(rearth.oritech.init.TagContent.LASER_FAST_BREAKING)
           .add(BlockContent.HARDENED_CRYSTAL_BLOCK)
-            .add(BlockContent.REINFORCED_CRYSTAL_BLOCK);
+          .add(BlockContent.REINFORCED_CRYSTAL_BLOCK);
         
         getOrCreateTagBuilder(TagContent.ALLAY_MINEABLE)
           .addOptionalTag(ConventionalBlockTags.ORES)

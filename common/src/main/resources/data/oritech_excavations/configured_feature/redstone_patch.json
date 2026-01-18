@@ -1,0 +1,8 @@
+{
+  "type": "oritech:uranium_patch",
+  "config": {
+    "number": 5,
+    "blockId": "minecraft:redstone_ore",
+    "crystalId": "spectrum:redstone_crystal"
+  }
+}

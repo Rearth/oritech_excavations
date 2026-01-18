@@ -29,6 +29,8 @@ public final class Excavation {
         MobContent.init();
         
         NetworkContent.init();
+        
+        FeatureContent.initialize();
     }
     
     // fabric only
@@ -64,6 +66,7 @@ public final class Excavation {
         res.put(RegistryKeys.SOUND_EVENT.getValue(), () -> ArchitecturyRegistryContainer.register(SoundContent.class, MOD_ID, false));
         res.put(RegistryKeys.RECIPE_SERIALIZER.getValue(), ExcavationRecipeRegistryContainer::finishSerializerRegister);
         res.put(RegistryKeys.DATA_COMPONENT_TYPE.getValue(), ComponentContent.COMPONENTS::register);
+        res.put(RegistryKeys.FEATURE.getValue(), () -> ArchitecturyRegistryContainer.register(FeatureContent.class, MOD_ID, false));
         
         return res;
         

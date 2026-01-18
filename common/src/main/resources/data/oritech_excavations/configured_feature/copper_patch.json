@@ -1,0 +1,8 @@
+{
+  "type": "oritech:uranium_patch",
+  "config": {
+    "number": 5,
+    "blockId": "minecraft:copper_ore",
+    "crystalId": "spectrum:copper_crystal"
+  }
+}

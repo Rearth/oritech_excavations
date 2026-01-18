@@ -1,0 +1,8 @@
+{
+  "type": "oritech:uranium_patch",
+  "config": {
+    "number": 5,
+    "blockId": "oritech:nickel_ore",
+    "crystalId": "oritech_excavations:nickel_crystal_block"
+  }
+}

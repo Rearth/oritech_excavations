@@ -25,6 +25,10 @@
       "required": false
     },
     {
+      "id": "#c:budding_blocks",
+      "required": false
+    },
+    {
       "id": "#minecraft:dirt",
       "required": false
     },
@@ -35,6 +39,8 @@
     "minecraft:grass_block",
     "minecraft:clay",
     "minecraft:mud",
+    "minecraft:amethyst_block",
+    "minecraft:budding_amethyst",
     {
       "id": "#minecraft:overworld_carver_replaceables",
       "required": false
