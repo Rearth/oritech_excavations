@@ -60,6 +60,9 @@ public class DigControllerBlockEntity extends NetworkedBlockEntity implements Ge
     
     private final HashSet<Integer> scanned = new HashSet<>();
     
+    // todo calculate total progress
+    // todo calculate only based on allay mineable or something?
+    
     public DigControllerBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesContent.DIG_CONTROLLER_ENTITY, pos, state);
     }

@@ -64,11 +64,14 @@ public class BlockTagGenerator extends FabricTagProvider<Block> {
           .addOptionalTag(ConventionalBlockTags.GRAVELS)
           .addOptionalTag(ConventionalBlockTags.SANDS)
           .addOptionalTag(ConventionalBlockTags.SANDSTONE_BLOCKS)
+          .addOptionalTag(ConventionalBlockTags.BUDDING_BLOCKS)
           .addOptionalTag(BlockTags.DIRT)
           .addOptionalTag(TagContent.HARDER_STONES)
           .add(Blocks.GRASS_BLOCK)
           .add(Blocks.CLAY)
           .add(Blocks.MUD)
+          .add(Blocks.AMETHYST_BLOCK)
+          .add(Blocks.BUDDING_AMETHYST)
           .addOptionalTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
         
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)

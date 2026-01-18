@@ -45,6 +45,8 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     @Rarity(net.minecraft.util.Rarity.UNCOMMON)
     public static final Block DIG_CONTROLLER = new DigControllerBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
+    // todo add sink
+    
     @rearth.oritech.init.BlockContent.UseGeoBlockItem(scale = 0.7f)
     public static final Block PRIMITIVE_DEEP_DRILL = new PrimitiveDeepDrillBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque());
     
