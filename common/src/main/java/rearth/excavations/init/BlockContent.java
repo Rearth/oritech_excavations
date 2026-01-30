@@ -58,7 +58,7 @@ public class BlockContent implements ArchitecturyBlockRegistryContainer {
     public static final Block EXTREME_CHARGE_BLOCK = new ExplosiveChargeBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque(), 16, 4_000_000, 50);
     
     @rearth.oritech.init.BlockContent.NoAutoDrop
-    public static final Block NICKEL_CRYSTAL_BLOCK = new AmethystClusterBlock(7, 3, AbstractBlock.Settings.copy(Blocks.AMETHYST_CLUSTER));
+    public static final Block NICKEL_CRYSTAL_BLOCK = new AmethystClusterBlock(7, 3, AbstractBlock.Settings.copy(Blocks.AMETHYST_CLUSTER).luminance(state -> 0));
     
     // vanilla
     // stone is .strength(1.5F, 6.0F)

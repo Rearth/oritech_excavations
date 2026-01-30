@@ -33,8 +33,6 @@ public class FeatureContent implements ArchitecturyRegistryContainer<Feature<?>>
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("gold_patch")));
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("nickel_patch")));
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("redstone_patch")));
-                Excavation.LOGGER.info("Registered ore patches");
-                
             }
         });
         

@@ -3,6 +3,6 @@
   "config": {
     "number": 5,
     "blockId": "minecraft:iron_ore",
-    "crystalId": "spectrum:iron_crystal"
+    "crystalId": "spectrum:iron_cluster"
   }
 }

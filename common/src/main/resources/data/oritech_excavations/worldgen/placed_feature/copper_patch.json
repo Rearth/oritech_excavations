@@ -1,9 +1,9 @@
 {
-  "feature": "oritech_excavations:nickel_patch",
+  "feature": "oritech_excavations:copper_patch",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 6
+      "count": 10
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 200
+          "absolute": 250
         },
         "min_inclusive": {
-          "absolute": 10
+          "absolute": 50
         }
       }
     },
@@ -26,11 +26,11 @@
         "type": "minecraft:matching_blocks",
         "blocks": "minecraft:air"
       },
-      "direction_of_search": "up",
+      "direction_of_search": "down",
       "max_steps": 9,
       "target_condition": {
         "type": "minecraft:has_sturdy_face",
-        "direction": "down"
+        "direction": "up"
       }
     },
     {
