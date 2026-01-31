@@ -1,0 +1,18 @@
+{
+  "type": "oritech_excavations:excavation_node",
+  "config": {
+    "nodeSize": 1,
+    "nodeOreChance": 1,
+    "boulderRadius": 2,
+    "depth": 10,
+    "nodeOres": [
+      "oritech:resource_node_coal"
+    ],
+    "boulderOres": [
+      "minecraft:deepslate_coal_ore",
+      "minecraft:coal_block"
+    ],
+    "overlayBlock": "oritech:still_oil_block",
+    "overlayHeight": 5
+  }
+}

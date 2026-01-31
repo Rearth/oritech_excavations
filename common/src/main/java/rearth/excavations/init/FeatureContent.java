@@ -10,6 +10,10 @@ import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.Feature;
 import rearth.excavations.Excavation;
+import rearth.excavations.init.world.resourcenode.ExcavationNodeFeature;
+import rearth.excavations.init.world.resourcenode.ExcavationNodeFeatureConfig;
+import rearth.excavations.init.world.resourcenode.ExcavationSurfaceNodeFeature;
+import rearth.oritech.Oritech;
 import rearth.oritech.init.world.features.uranium.UraniumPatchFeature;
 import rearth.oritech.init.world.features.uranium.UraniumPatchFeatureConfig;
 import rearth.oritech.util.registry.ArchitecturyRegistryContainer;
@@ -22,7 +26,25 @@ public class FeatureContent implements ArchitecturyRegistryContainer<Feature<?>>
     public static final Feature<UraniumPatchFeatureConfig> NICKEL_PATCH = new UraniumPatchFeature(CodecUtils.toCodec(UraniumPatchFeatureConfig.URANIUM_FEATURE_ENDEC));
     public static final Feature<UraniumPatchFeatureConfig> REDSTONE_PATCH = new UraniumPatchFeature(CodecUtils.toCodec(UraniumPatchFeatureConfig.URANIUM_FEATURE_ENDEC));
     
+    public static final Feature<ExcavationNodeFeatureConfig> EXCAVATION_NODE = new ExcavationNodeFeature(CodecUtils.toCodec(ExcavationNodeFeatureConfig.NODE_FEATURE_ENDEC));
+    public static final Feature<ExcavationNodeFeatureConfig> EXCAVATION_SURFACE_NODE = new ExcavationSurfaceNodeFeature(CodecUtils.toCodec(ExcavationNodeFeatureConfig.NODE_FEATURE_ENDEC));
+    
     public static void initialize() {
+        
+        
+        BiomeModifications.addProperties((context, mutable) -> {
+            if (context.hasTag(BiomeTags.IS_OVERWORLD)) {
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_iron")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_coal")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_copper")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_nickel")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_gold")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_redstone")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_lapis")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_uranium")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_platinum")));
+            }
+        });
         
         if (!Platform.isModLoaded("spectrum")) return;
         
@@ -33,6 +55,7 @@ public class FeatureContent implements ArchitecturyRegistryContainer<Feature<?>>
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("gold_patch")));
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("nickel_patch")));
                 mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("redstone_patch")));
+                mutable.getGenerationProperties().addFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, RegistryKey.of(RegistryKeys.PLACED_FEATURE, Excavation.id("excavation_node_diamond")));
             }
         });
         

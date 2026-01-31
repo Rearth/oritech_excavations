@@ -1,0 +1,17 @@
+{
+  "type": "oritech_excavations:excavation_surface_node",
+  "config": {
+    "nodeSize": 1,
+    "nodeOreChance": 1,
+    "boulderRadius": 2,
+    "depth": 20,
+    "nodeOres": [
+      "oritech:resource_node_lapis"
+    ],
+    "boulderOres": [
+      "minecraft:lapis_block"
+    ],
+    "overlayBlock": "oritech:still_oil_block",
+    "overlayHeight": 5
+  }
+}

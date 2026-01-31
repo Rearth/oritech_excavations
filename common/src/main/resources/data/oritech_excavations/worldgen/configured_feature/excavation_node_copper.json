@@ -1,0 +1,18 @@
+{
+  "type": "oritech_excavations:excavation_node",
+  "config": {
+    "nodeSize": 1,
+    "nodeOreChance": 1,
+    "boulderRadius": 2,
+    "depth": 20,
+    "nodeOres": [
+      "oritech:resource_node_copper"
+    ],
+    "boulderOres": [
+      "minecraft:deepslate_copper_ore",
+      "minecraft:raw_copper_block"
+    ],
+    "overlayBlock": "oritech:still_oil_block",
+    "overlayHeight": 5
+  }
+}
