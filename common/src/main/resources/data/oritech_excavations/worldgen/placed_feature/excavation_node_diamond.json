@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 120
+      "chance": 90
     },
     {
       "type": "minecraft:in_square"
@@ -12,7 +12,7 @@
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:uniform",
-        "max_inclusive": { "absolute": 10 },
+        "max_inclusive": { "absolute": 20 },
         "min_inclusive": { "absolute": 5 }
       }
     },
@@ -23,7 +23,7 @@
         "blocks": "minecraft:air"
       },
       "direction_of_search": "down",
-      "max_steps": 9,
+      "max_steps": 20,
       "target_condition": {
         "type": "minecraft:has_sturdy_face",
         "direction": "up"

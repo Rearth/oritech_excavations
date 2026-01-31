@@ -4,7 +4,7 @@
     "nodeSize": 1,
     "nodeOreChance": 1,
     "boulderRadius": 2,
-    "depth": 20,
+    "depth": 80,
     "nodeOres": [
       "oritech:resource_node_platinum"
     ],
